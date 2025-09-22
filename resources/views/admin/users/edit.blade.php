@@ -46,7 +46,7 @@
                                     value="{{$usersData->phone}}" minlength="10" maxlength="10">
                             </div>
                      </div>
-                    <div class="mb-3 row">
+                    <!-- <div class="mb-3 row">
                             <label for="date" class="col-md-2 col-form-label">Date {!!REQUIRED_STAR!!}</label>
                             <div class="col-md-10">
                                 <input class="datepicker form-control"  placeholder="yyyy-mm-dd"type="text" type="text" 
@@ -54,7 +54,7 @@
                                      readonly="true" value="{{$usersData->dob}}"></input>
                                     
                             </div>
-                    </div>
+                    </div> -->
                      <div class="mb-3 row">
                             <label for="address" class="col-md-2 col-form-label">Address</label>
                             <div class="col-md-10">
@@ -65,11 +65,20 @@
                      <div class="mb-3 row">
                             <label for="short_description" class="col-md-2 col-form-label"></label>
                             <div class="col-md-10">
-                            <img src="{{url('/')}}/upload/user/normal/{{$usersData->image}}"alt="User" width="100px" height="100px"/>
+                                @if(!empty($usersData->image))
+                                <div class="card mb-0">
+                                    <div class="el-card-item">
+                                        <div class="el-card-avatar el-overlay-1 w-100 overflow-hidden position-relative text-center">
+                                            <a class="image-popup-vertical-fit" href="{{url('/')}}/upload/user/normal/{{$usersData->image}}"> <img src="{{url('/')}}/upload/user/normal/{{$usersData->image}}" class="d-block position-relative" alt="ID Proof" /> </a>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                @endif
                             </div>
                     </div>
                      <div class="mb-3 row">
-                        <label for="image" class="col-md-2 col-form-label">Profile Image</label>
+                        <label for="image" class="col-md-2 col-form-label">ID Proof</label>
                         <div class="col-md-10">
                         <input class="form-control" type="file" name="image" id="image">
                     </div>

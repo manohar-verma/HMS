@@ -44,7 +44,7 @@
                                     value="" minlength="10" maxlength="10">
                             </div>
                      </div>
-                    <div class="mb-3 row">
+                    <!-- <div class="mb-3 row">
                             <label for="date" class="col-md-2 col-form-label">Date {!!REQUIRED_STAR!!}</label>
                             <div class="col-md-10">
                                 <input class="datepicker form-control"  placeholder="yyyy-mm-dd"type="text" type="text" 
@@ -52,7 +52,7 @@
                                      readonly="true"></input>
                                     
                             </div>
-                    </div>
+                    </div> -->
                      <div class="mb-3 row">
                             <label for="address" class="col-md-2 col-form-label">Address</label>
                             <div class="col-md-10">
@@ -61,7 +61,7 @@
                             </div>
                      </div>
                      <div class="mb-3 row">
-                        <label for="image" class="col-md-2 col-form-label">Profile Image</label>
+                        <label for="image" class="col-md-2 col-form-label">ID Proof</label>
                         <div class="col-md-10">
                         <input class="form-control" type="file" name="image" id="image">
                     </div>
@@ -118,7 +118,7 @@
       $(function(){
        
         $('#addEditForm').submit(function(){
-            if ($('#name').commonCheck() & $('#email').validateEmail() & $('#phone').commonCheck() & $('#dob').commonCheck()) 
+            if ($('#name').commonCheck() & $('#email').validateEmail() & $('#phone').commonCheck()) 
             { 
                 return true;
                 
