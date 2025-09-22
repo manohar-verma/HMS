@@ -2,9 +2,9 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class awards_mod extends Model {
+class blog_mod extends Model {
 	protected $fillable = [];
-	protected $table = 'awards';
-	protected $primaryKey = 'id';
+	protected $table = 'bookings';
+	protected $primaryKey = 'booking_id';
 	public $timestamps = false;
 }
