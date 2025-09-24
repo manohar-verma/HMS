@@ -33,7 +33,9 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   nginx:
-    image: nginx:latest
+   build:
+    context: .
+    dockerfile: nginx.Dockerfile
     container_name: nginx
     ports:
     - "8080:80"  # Host port 8080 → Container port 80
@@ -43,6 +45,5 @@ services:
        - ./wait-for-app.sh:/wait-for-app.sh
     depends_on:
       - app
-    command: ["/wait-for-app.sh"]
 volumes:
   pgdata: {}
