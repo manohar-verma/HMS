@@ -30,10 +30,16 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
 # Ensure correct permissions for Laravel
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage /var/www/html/bootstrap/cache
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Generate Laravel app key if not already set
 RUN php artisan key:generate || echo "App key already set"
 
-# Expose PHP-FPM
+# Optional: create storage symlink for public access
+RUN php artisan storage:link || echo "Storage link already exists"
+
+# Optional: run migrations (can also be done via post-deploy script)
+# RUN php artisan migrate --force || echo "Migration skipped"
+
+# Start PHP-FPM
 CMD ["php-fpm"]
