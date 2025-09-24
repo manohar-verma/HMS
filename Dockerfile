@@ -22,6 +22,10 @@ WORKDIR /var/www/html
 # Copy Laravel source code
 COPY . .
 
+# Copy wait script and make it executable
+COPY wait-for-app.sh /wait-for-app.sh
+RUN chmod +x /wait-for-app.sh
+
 # Trust the repo directory (fixes Git ownership warning)
 RUN git config --global --add safe.directory /var/www/html
 
