@@ -1,5 +1,5 @@
 <?php
-   if (!defined('SITE_URL')) define('SITE_URL','https://maroon-cormorant-726516.hostingersite.com');
+   if (!defined('SITE_URL')) define('SITE_URL','https://stayhub360.com');
    if (!defined('ADMIN_SEPARATE')) define('ADMIN_SEPARATE', 'admin');
    if (!defined('ADMIN_URL')) define('ADMIN_URL',SITE_URL.'/'.ADMIN_SEPARATE);
    if (!defined('ADMIN_PER_PAGE')) define('ADMIN_PER_PAGE','20');
