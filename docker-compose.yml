@@ -17,6 +17,7 @@ services:
       DB_DATABASE: hms_db
       DB_USERNAME: hms_env_prod
       DB_PASSWORD: KT@Manohar#2025
+    command: php -S 0.0.0.0:8000 -t public
 
   db:
     image: postgres:15
