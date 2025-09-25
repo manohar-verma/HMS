@@ -37,7 +37,7 @@ services:
       - ./wait-for-app.sh:/wait-for-app.sh
     depends_on:
       - app
-    command: ["sh", "/wait-for-app.sh"]
+    command: ["sh", "-c", "while ! busybox nc -z app 9000; do sleep 1; done && nginx -g 'daemon off;'"]
 
 volumes:
   pgdata: {}
