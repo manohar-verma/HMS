@@ -37,7 +37,7 @@ services:
       - ./wait-for-app.sh:/wait-for-app.sh
     depends_on:
       - app
-    command: ["sh", "-c", "while ! busybox nc -z app 9000; do sleep 1; done && nginx -g 'daemon off;'"]
+    command: ["sh", "-c", "until wget -q --spider http://app:8000; do echo 'Waiting for Laravel...'; sleep 2; done && nginx -g 'daemon off;'"]
 
 volumes:
   pgdata: {}
