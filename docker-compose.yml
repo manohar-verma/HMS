@@ -27,17 +27,18 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-  nginx:
-    image: nginx:latest
-    ports:
-      - "8080:80"
-    volumes:
-      - .:/var/www/html
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      - ./wait-for-app.sh:/wait-for-app.sh
-    depends_on:
-      - app
-    command: ["sh", "-c", "until wget -q --spider http://app:8000; do echo 'Waiting for Laravel...'; sleep 2; done && nginx -g 'daemon off;'"]
+    nginx:
+      image: nginx:latest
+      ports:
+        - "8080:80"
+      volumes:
+        - .:/var/www/html
+        - ./nginx.conf:/etc/nginx/conf.d/default.conf
+        - ./wait-for-app.sh:/wait-for-app.sh  # optional
+      depends_on:
+        - app
+      command: ["sh", "-c", "until getent hosts app; do echo 'Waiting for Laravel container...'; sleep 2; done && nginx -g 'daemon off;'"]
+
 
 volumes:
   pgdata: {}
