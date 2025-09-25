@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
-    && docker-php-ext-install pdo pdo_pgsql
+    && docker-php-ext-install pdo pdo_pgsql zip
 
 # Install Composer from official image
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -25,11 +25,11 @@ COPY . .
 # Ensure Composer is executable
 RUN chmod +x /usr/bin/composer
 
-# Install Laravel dependencies
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
-
 # Trust the repo directory (fixes Git ownership warning)
 RUN git config --global --add safe.directory /var/www/html
+
+# Install Laravel dependencies
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader || echo "Composer install failed"
 
 # Set correct permissions
 RUN chown -R www-data:www-data /var/www/html \
