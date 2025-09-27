@@ -5,8 +5,6 @@ services:
       dockerfile: Dockerfile
     expose:
       - "9000"
-    ports:
-      - "8000:8000"
     depends_on:
       - db
     networks:
@@ -18,7 +16,6 @@ services:
       DB_DATABASE: hms_db
       DB_USERNAME: hms_env_prod
       DB_PASSWORD: KT@Manohar#2025
-    command: php -S 0.0.0.0:8000 -t public
 
   db:
     image: postgres:15
