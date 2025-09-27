@@ -38,7 +38,7 @@ Route::middleware('AdminAuthentication')->group( function () {
     Route::get('/users/delete/{id}', [users::class,'delete']);
     Route::post('users/changeStatus/{id}',[users::class,'dostatuschange']);
 
-    Route::get('/booking/all-booking', [booking::class,'index']);
+    Route::get('/booking/all', [booking::class,'index']);
     Route::get('/booking/new-booking', [booking::class,'newBooking']);
     Route::get('/booking/calendar-view', [booking::class,'calendarView']);
 

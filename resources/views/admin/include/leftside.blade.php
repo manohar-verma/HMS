@@ -100,7 +100,7 @@
                         <ul aria-expanded="false" class="collapse  first-level">
                             @if(in_array("sub-admin", $userRoles))
                                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                href="{{ADMIN_URL}}/booking/all-booking" aria-expanded="false">📋<span class="hide-menu">All Bookings</span></a></li>           
+                                href="{{ADMIN_URL}}/booking/all" aria-expanded="false">📋<span class="hide-menu">All Bookings</span></a></li>           
                             @endif
                             @if(in_array("guest", $userRoles))
                             <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
