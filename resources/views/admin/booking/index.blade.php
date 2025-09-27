@@ -154,4 +154,3 @@
   });
 
 </script>
-@include('admin.include.footer')
