@@ -6,6 +6,8 @@
 ?>
 <link href="{{SITE_URL}}/assets/admin/css/pagination.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="{{SITE_URL}}/assets/common/ckeditor/samples/css/samples.css">
+
+
 <!-- Container fluid  -->
 <!-- -------------------------------------------------------------- -->
 <div class="container-fluid">
