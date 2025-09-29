@@ -58,7 +58,7 @@
                                         <button type="submit" class="btn btn-success"><span
                                                 class="fas fa-search"></span>
                                             </button>
-                                            <button type="button" onclick="window.location='{{ADMIN_URL}}/booking/all'"
+                                            <button type="button" onclick="window.location='{{ADMIN_URL}}/booking/all-booking'"
                                             class="btn btn-danger">Reset
                                         </button>
                                         
