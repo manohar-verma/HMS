@@ -134,7 +134,16 @@
                                 {!!$statusDisplay!!}
                             </td>
                              <td>
-                              
+                              <div class="action-btn">
+                                @if($accessUpdate)
+                                    <a href="{{ADMIN_URL}}/booking/edit/{{$listitem->id}}" class="text-info edit"><i data-feather="edit"
+                                            class="feather-sm fill-white"></i></a>
+                                @endif
+                                @if($accessDelete)               
+                                    <a href="{{ADMIN_URL}}/booking/delete/{{$listitem->id}}" class="text-dark  ms-2" onclick="return confirm('Are you sure to delete?');"><i data-feather="trash-2"
+                                            class="feather-sm fill-white"></i></a>
+                                @endif
+                               
                             </td>
                         </tr>
                         @endforeach
