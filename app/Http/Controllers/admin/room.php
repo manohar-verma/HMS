@@ -33,7 +33,7 @@ class room extends BaseController {
         $user = auth()->guard('admin')->user();
         $userAccess = $this->_myFunUserRole->getUserAccess($user->id);
         $accessRole=(explode(",",$userAccess));
-        if(!in_array("all-booking", $accessRole))
+        if(!in_array("room-types", $accessRole))
         {
              Session::put('error', 'Access denied to this page');
             return redirect(ADMIN_URL.'/dashboard');
