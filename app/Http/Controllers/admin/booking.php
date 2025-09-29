@@ -40,27 +40,20 @@ class booking extends BaseController {
         $data['accessAddNew'] = $this->_myFun->validateUserAccess('all-booking','add-new');
         $data['accessUpdate'] = $this->_myFun->validateUserAccess('all-booking','update');
         $data['accessDelete'] = $this->_myFun->validateUserAccess('all-booking','delete');
-        $status = $request->input('status');
-        $date = $request->input('date');
-        $name = $request->input('name');
+        
+        $searchTerm = $request->input('searchTerm');
         $page   = $request->input('page');
         $orderby = $request->input('orderby');
         $sortval = $request->input('sortval');
         $searchResults = DB::table('bookings')
         ->join('users', 'bookings.guest_id', '=', 'users.id')
-        ->join('hotels', 'bookings.hotel_id', '=', 'hotels.hotel_id')
-        ->select('users.name','users.phone','hotels.name as hotal_name', 'bookings.*');
+        ->select('users.name','users.phone', 'bookings.*');
        
-            if($name != ''){
-                $searchResults->where('name','LIKE', '%'.$name.'%');
+            if($searchTerm != ''){
+                $searchResults->where('users.name','LIKE', '%'.$searchTerm.'%')
+                 ->orWhere('bookings.booking_id', 'LIKE', '%' . $searchTerm . '%');
             }
-            if($status != ''){
-                $searchResults->where('booking_status','LIKE', '%'.$status.'%');
-            }
-            if($date != ''){
-                $searchResults->where('check_in_date','LIKE', '%'.$date.'%');
-            }
-            
+           
            $PerPage = ADMIN_PER_PAGE;
            $currentPage = $page? $page : 1;
            if((!is_numeric($currentPage)) || ($currentPage < 1) ){
@@ -68,7 +61,7 @@ class booking extends BaseController {
             }
             $startpoint = (floor($currentPage) * $PerPage) - $PerPage;
         
-         $orderByArray = array('booking_id');
+         $orderByArray = array('booking_id','check_in_date','check_out_date','booking_status');
          $orderTypeArray = array('ASC','DESC');
           
         $orderBy = 'booking_id';

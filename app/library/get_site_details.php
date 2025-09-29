@@ -39,11 +39,7 @@ use DateTime;
            $userData = DB::table('users')->where('id',$user_id)->first();
            return $userData;
         }
-       public function getParentMenuData($id)
-       {
-         $menuData = DB::table('menu')->where('id',$id)->first();
-         return $menuData;
-       }
+      
        public function opensslEncrypted($encString)
        {
          
@@ -90,88 +86,29 @@ use DateTime;
   
          return $decryption;
        }
-       public function getPageCategory($id)
-       {
-         $categoryData = DB::table('page_category')->where('id',$id)->first();
-         return $categoryData;
-       }
-       public function getNewType($id)
-       {
-         $categoryData = DB::table('news_type')->where('id',$id)->first();
-         return $categoryData;
-       }
-      
+       
        public function get_user_data($id)
        {
         $usersData = DB::table('users')->where('id',$id)->first();
         return $usersData;
        }
-       function get_site_page_data($id){
-        $cmsData = DB::table('cms')->where('page_category',$id)->where('is_deleted','0')->where('status','1')->first();
-        return $cmsData;
+       function getRoomInfo($booking_id){
+          $roomBookingData = DB::table('booking_rooms')->where('booking_id',$booking_id)->first();
+          if(!empty($roomBookingData)){
+             $roomData = DB::table('rooms')->where('booking_id',$roomBookingData->room_id)->first();
+             if(!empty($roomData)){
+                 $roomTypeData = DB::table('room_type')->where('type_id',$roomData->room_type_id)->first();
+                return !empty($roomTypeData)?$roomTypeData:[];
+             }else{ 
+              return [];
+             }
+          }else{
+            return [];
+          }
        }
-       function getBlogCat($id){
-        $typeData = DB::table('blog_cat')->where('id',$id)->first();
-        return $typeData;
+       function getPaymentInfo($booking_id){
+          $paymentData = DB::table('payments')->where('booking_id',$booking_id)->first();
+          return !empty($paymentData)?$paymentData:[];
        }
-       function getAuthor($id){
-        $authData = DB::table('team')->where('id',$id)->first();
-        return $authData;
-       }
-       function getServiceInfo($id){
-        $servicesData = DB::table('services')->where('id',$id)->first();
-        return $servicesData;
-       }
-       function getPlanInfo($id){
-        $planData = DB::table('pricing_plans')->where('id',$id)->first();
-        return $planData;
-       }
-      function convert12($str)
-      {
-            // Get Hours
-            $h1 = $str[0] - '0';
-            $h2 = $str[1] - '0';
-
-            $hh = $h1 * 10 + $h2;
-
-            // Finding out the Meridien 
-            // of time ie. AM or PM
-            $Meridien;
-            if ($hh < 12) 
-            {
-                $Meridien = "AM";
-            }
-            else
-                $Meridien = "PM";
-
-            $hh %= 12;
-
-            // Handle 00 and 12 
-            // case separately
-            if ($hh == 0) 
-            {
-                echo "12";
-
-                // Printing minutes and seconds
-                for ($i = 2; $i < 8; ++$i)
-                {
-                    echo $str[$i];
-                }
-            }
-            else
-            {
-                echo $hh;
-                
-                // Printing minutes and seconds
-                for ($i = 2; $i < 8; ++$i) 
-                {
-                    echo $str[$i];
-                }
-            }
-
-            // After time is printed
-            // cout Meridien
-            echo " " , $Meridien;
-      }
   }
 }
