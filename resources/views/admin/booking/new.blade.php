@@ -91,17 +91,18 @@
                     
                     <div class="mb-3 row">
                         <label for="room" class="col-md-2 col-form-label">Available Rooms</label>
-                        <div class="col-md-10" id="rooms_div">
+                        <div class="col-md-10 table-responsive" id="rooms_div">
                                 <table class="tablesaw no-wrap table-bordered table-hover table available-rooms" data-tablesaw id="roomInfo">
                                     <thead>
                                         <tr>
                                             <th scope="col" class="border"></th>
                                             <th scope="col" class="border">Room Number</th>
-                                            <th scope="col" class="border">Description</th>
+                                            <th scope="col" class="border">Room Type</th>
+                                            <th scope="col" class="border">Base Price</th>
                                             <th scope="col" class="border"> Max Guest</th>
                                             <th scope="col" class="border">Number Of Bed</th>
                                             <th scope="col" class="border">Amenities</th>
-                                            <th scope="col" class="border">Base Price</th>
+                                            <th scope="col" class="border">Description</th>
                                         </tr>
                                     </thead>
                                     <tbody id="checkall-target"> 
@@ -291,7 +292,7 @@ function handleDateChange(checkin, checkout) {
 			if (Array.isArray(response) && response.length>0){
                
                 $.each(response, function(index, item) {
-                   $('#roomInfo tbody').append(`<tr> <td><label><input type="checkbox" id="available_rooms" name="available_rooms[]" data-base-price="${item?.base_price}" data-room-number="${item?.room_number}" value="${item?.room_id}"><span class="sr-only"> Select Row</span></label></td><td>${item?.room_number}</td><td>${item?.description}</td> <td>${item?.max_guests}</td> <td>${item?.number_of_bed}</td> <td>${typeof item?.amenities === "string" ? JSON.parse(item?.amenities) : item?.amenities}</td> <td><i class="fas fa-rupee-sign"></i> ${item?.base_price}</td> </tr>`);
+                   $('#roomInfo tbody').append(`<tr> <td><label><input type="checkbox" id="available_rooms" name="available_rooms[]" data-base-price="${item?.base_price}" data-room-number="${item?.room_number}" value="${item?.room_id}"><span class="sr-only"> Select Row</span></label></td><td>${item?.room_number}</td><td>${item?.room_type}</td><td><i class="fas fa-rupee-sign"></i> ${item?.base_price}</td> <td>${item?.max_guests}</td> <td>${item?.number_of_bed}</td> <td>${typeof item?.amenities === "string" ? JSON.parse(item?.amenities) : item?.amenities}</td><td>${item?.description}</td></tr>`);
                 });
 			}
 			else{
