@@ -111,6 +111,14 @@
                         </div>
                     </div>
                     <div class="mb-3 row">
+                            <label for="num_guests" class="col-md-2 col-form-label">Number Of Guest {!!REQUIRED_STAR!!}</label>
+                            <div class="col-md-10">
+                                <input class="form-control allow_numeric"type="text" name="num_guests" id="num_guests"
+                                    value="" min="1" onkeyup="handleKeyUp(this.value);">
+                                <input type="hidden" name="maxGuestCount" id="maxGuestCount" value="">    
+                            </div>
+                     </div>
+                    <div class="mb-3 row">
                         <label for="payment_method" class="col-md-2 col-form-label">Payment Method {!!REQUIRED_STAR!!}</label>
                         <div class="col-md-10">
                             <select class="form-select col-12" id="payment_method" name="payment_method">
@@ -240,7 +248,7 @@ $(function(){
                 alert("Please select at least one room.");
                 return false;
             }
-            if ($('#hotels').commonCheck() & $('#guest').commonCheck() & $('#checkIn').commonCheck()  & $('#checkOut').commonCheck() & $('#payment_method').commonCheck() & $('#payment_ref').commonCheck()) 
+            if ($('#hotels').commonCheck() & $('#guest').commonCheck() & $('#checkIn').commonCheck()  & $('#checkOut').commonCheck() & $('#num_guests').commonCheck() & $('#payment_method').commonCheck() & $('#payment_ref').commonCheck()) 
             { 
                 return true;
                 
@@ -292,7 +300,7 @@ function handleDateChange(checkin, checkout) {
 			if (Array.isArray(response) && response.length>0){
                
                 $.each(response, function(index, item) {
-                   $('#roomInfo tbody').append(`<tr> <td><label><input type="checkbox" id="available_rooms" name="available_rooms[]" data-base-price="${item?.base_price}" data-room-number="${item?.room_number}" value="${item?.room_id}"><span class="sr-only"> Select Row</span></label></td><td>${item?.room_number}</td><td>${item?.room_type}</td><td><i class="fas fa-rupee-sign"></i> ${item?.base_price}</td> <td>${item?.max_guests}</td> <td>${item?.number_of_bed}</td> <td>${typeof item?.amenities === "string" ? JSON.parse(item?.amenities) : item?.amenities}</td><td>${item?.description}</td></tr>`);
+                   $('#roomInfo tbody').append(`<tr> <td><label><input type="checkbox" id="available_rooms" name="available_rooms[]" data-base-price="${item?.base_price}" data-room-number="${item?.room_number}" data-max-guest="${item?.max_guests}" value="${item?.room_id}"><span class="sr-only"> Select Row</span></label></td><td>${item?.room_number}</td><td>${item?.room_type}</td><td><i class="fas fa-rupee-sign"></i> ${item?.base_price}</td> <td>${item?.max_guests}</td> <td>${item?.number_of_bed}</td> <td>${typeof item?.amenities === "string" ? JSON.parse(item?.amenities) : item?.amenities}</td><td>${item?.description}</td></tr>`);
                 });
 			}
 			else{
@@ -313,6 +321,7 @@ $(document).on('change', '.available-rooms input[type="checkbox"]', function() {
    $("#priceCal tbody").empty();
    const numberOfDays = $("#bookingDayCount").val();
    let totalPrice = 0;
+   let maxGuestCount = 0;
    $('.available-rooms input[type="checkbox"]:checked').each(function() {
     let basePrice = $(this).data('base-price'); // fetch data-base-price
     let roomNumber = $(this).data('room-number');
@@ -320,13 +329,14 @@ $(document).on('change', '.available-rooms input[type="checkbox"]', function() {
     // Format to 2 decimals
     let formattedSubTotal = subTotal.toFixed(2);
     totalPrice += subTotal;
+    maxGuestCount += $(this).data('max-guest');
     $("#priceCal tbody").append(`<tr><td>${roomNumber}</td><td>${basePrice}</td><td>${numberOfDays}</td><td>${formattedSubTotal}</td></tr>
     `);
     });
     $("#priceCal tbody").append(`<tr><td style="border-right: 0px !important;"><h4>Total Price</h4></td><td style="border-left: 0px !important;
     border-right: 0px !important;"></td><td style="border-left: 0px !important;
     border-right: 0px !important;"></td><td>${totalPrice.toFixed(2)}</td></tr>`);
-    
+    $('#maxGuestCount').val(maxGuestCount);
 });
 function hotelSelect(){
     $('#checkIn').val('');
@@ -335,5 +345,18 @@ function hotelSelect(){
     $("#priceCal tbody").empty();
     $("#number_of_days").css("display", "none");
     $("#bookingDayCount").val('');
+}
+function handleKeyUp(val){
+  
+   if(val>0){
+      const maxGuest = parseInt($('#maxGuestCount').val(), 10);
+      if(val>maxGuest){
+       $('#num_guests').val('');
+      alert('Based on your room selection, the maximum number of guests allowed is ' + maxGuest + '.');
+      }
+   }else{
+    $('#num_guests').val('');
+    alert('Please enter valid number of guest');
+   }
 }
 </script>    

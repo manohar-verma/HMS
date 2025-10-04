@@ -158,18 +158,23 @@ class booking extends BaseController {
     function bookingSubmit(Request $request){
      try {
        $hotel_id  = $request->input('hotels'); 
+       $available_rooms  = $request->input('available_rooms');
        $checkIn   = date('Y-m-d',strtotime($request->input('checkin')));
        $checkOut  = date('Y-m-d',strtotime($request->input('checkout')));
-       $guest_id  = $request->input('guest');
-       $rooms_id  = $request->input('rooms');
-       $payment_method  = $request->input('payment_method');
-       $payment_ref  = $request->input('payment_ref');
-       $bookingDays  = calculateStayDays($checkIn, $checkOut);
-       $getRoomInfo  = DB::table('rooms')->where('hotel_id',$hotel_id)->where('room_id',$rooms_id)->where('is_active','1')->first();
-        if(!empty($getRoomInfo)){
-            $total_amount = $bookingDays * $getRoomInfo->base_price;
+       $getRoomInfo  = DB::table('rooms')->where('hotel_id',$hotel_id)->whereIn('room_id',$available_rooms)->where('is_active','1')->get();
+       $bookingDays  = $this->calculateStayDays($checkIn, $checkOut);
+        if($getRoomInfo->count()>0){
+            $total_amount = 0;
+            foreach ($getRoomInfo as $item) {
+                $total_amount += $item->base_price * $bookingDays;
+            }
             $total_amount = number_format($total_amount, 2, '.', '');
-            DB::transaction(function () {
+            DB::transaction(function ($request, $total_amount, $getRoomInfo, $checkIn, $checkOut,  $hotel_id) { 
+                $guest_id  = $request->input('guest');
+                $num_guests  = $request->input('num_guests');
+                $payment_method  = $request->input('payment_method');
+                $payment_ref  = $request->input('payment_ref');
+                
                 // Insert into booking table
                 DB::table('bookings')->insert([
                     'guest_id' => $guest_id,
@@ -185,17 +190,24 @@ class booking extends BaseController {
                 ]);
                  $booking_id = DB::getPdo()->lastInsertId(); 
                 // Insert into booking_rooms table
-                DB::table('booking_rooms')->insert([
-                    'booking_id' => $booking_id, // or use Eloquent's $user->id
-                    'room_id' => $rooms_id,
-                    'room_count'=>$room_count
+                foreach ($getRoomInfo as $item) {
+                    DB::table('booking_rooms')->insert([
+                        'booking_id' => $booking_id, // or use Eloquent's
+                        'room_id' => $$item->room_id,
+                        'room_count'=>1
+                    ]);
+                }
+                // Insert into payments table
+                DB::table('payments')->insert([
+                    'booking_id' => $booking_id,
+                    'payment_ref' => $payment_ref,
+                    'payment_method'=> $payment_ref,
+                    'amount'=>$total_amount,
+                    'status'=>'paid',
+                    'paid_at'=>date('Y-m-d')
                 ]);
-
-                // Insert into third table
-                DB::table('settings')->insert([
-                    'user_id' => DB::getPdo()->lastInsertId(),
-                    'theme' => 'dark',
-                ]);
+                Session::put('success', 'Booked successfully');
+                return redirect(ADMIN_URL.'/booking/edit/'.$booking_id);
             });
         }else{
             Log::error('failed to fetch room data: ' . $hotel_id.'/'.$rooms_id);
