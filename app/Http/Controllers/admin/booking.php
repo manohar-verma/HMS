@@ -138,6 +138,23 @@ class booking extends BaseController {
             return response()->json(['error' => 'Unable to fetch available rooms //'], 500);
         }
     }
+    function calculateStayDays($checkinDate, $checkoutDate)
+    {
+        if ($checkinDate && $checkoutDate) {
+            $checkin = Carbon::parse($checkinDate);
+            $checkout = Carbon::parse($checkoutDate);
+
+            // Calculate difference in days
+            $daysDiff = $checkout->diffInDays($checkin, false); // false allows negative values
+
+            // Ensure at least 1 day
+            $numDays = $daysDiff > 0 ? $daysDiff : 1;
+
+            return $numDays;
+        }
+
+        return null; // or handle missing dates as needed
+    }
     function bookingSubmit(Request $request){
      try {
        $hotel_id  = $request->input('hotels'); 
@@ -147,28 +164,44 @@ class booking extends BaseController {
        $rooms_id  = $request->input('rooms');
        $payment_method  = $request->input('payment_method');
        $payment_ref  = $request->input('payment_ref');
-       $bookingDayCount  = $request->input('bookingDayCount');
-        DB::transaction(function () {
-            // Insert into first table
-            DB::table('bookings')->insert([
-                'name' => 'Aarti',
-                'email' => 'aarti@example.com',
-                'password' => bcrypt('secret'),
-            ]);
+       $bookingDays  = calculateStayDays($checkIn, $checkOut);
+       $getRoomInfo  = DB::table('rooms')->where('hotel_id',$hotel_id)->where('room_id',$rooms_id)->where('is_active','1')->first();
+        if(!empty($getRoomInfo)){
+            $total_amount = $bookingDays * $getRoomInfo->base_price;
+            $total_amount = number_format($total_amount, 2, '.', '');
+            DB::transaction(function () {
+                // Insert into booking table
+                DB::table('bookings')->insert([
+                    'guest_id' => $guest_id,
+                    'hotel_id' => $hotel_id,
+                    'booking_ref' => 'admin',
+                    'check_in_date' =>$checkIn,
+                    'check_out_date'=>$checkOut,
+                    'num_guests'=>$num_guests,
+                    'total_amount'=>$total_amount,
+                    'booking_status'=>'success',
+                    'created_at'=>date('Y-m-d'),
+                    'updated_at'=>date('Y-m-d')
+                ]);
+                 $booking_id = DB::getPdo()->lastInsertId(); 
+                // Insert into booking_rooms table
+                DB::table('booking_rooms')->insert([
+                    'booking_id' => $booking_id, // or use Eloquent's $user->id
+                    'room_id' => $rooms_id,
+                    'room_count'=>$room_count
+                ]);
 
-            // Insert into second table
-            DB::table('profiles')->insert([
-                'user_id' => DB::getPdo()->lastInsertId(), // or use Eloquent's $user->id
-                'bio' => 'Full-stack developer',
-            ]);
-
-            // Insert into third table
-            DB::table('settings')->insert([
-                'user_id' => DB::getPdo()->lastInsertId(),
-                'theme' => 'dark',
-            ]);
-        });
-
+                // Insert into third table
+                DB::table('settings')->insert([
+                    'user_id' => DB::getPdo()->lastInsertId(),
+                    'theme' => 'dark',
+                ]);
+            });
+        }else{
+            Log::error('failed to fetch room data: ' . $hotel_id.'/'.$rooms_id);
+            Session::put('error','Some thing went wrong please try again');
+            return redirect(ADMIN_URL.'/booking/new-booking');
+        }
        } catch (\Exception $e){
           // Rollback happens automatically
           Log::error('booking Transaction failed: ' . $e->getMessage());

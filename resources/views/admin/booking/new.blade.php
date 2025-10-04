@@ -88,20 +88,25 @@
                             <input type="hidden" name="bookingDayCount" id="bookingDayCount" value="">
                         </div>
                     </div>
-                        <div class="mb-3 row">
-                        <label for="rooms" class="col-md-2 col-form-label">Room {!!REQUIRED_STAR!!}</label>
-                        <div class="col-md-10" id="rooms_div">
-                            <select class="form-select col-12" id="rooms" name="rooms">
-                                <option value="">Choose Room</option>
-                               
-                            </select>
-                            
-                        </div>
-                    </div>
+                    
                     <div class="mb-3 row">
-                        <label for="room" class="col-md-2 col-form-label"></label>
-                        <div class="col-md-10" id="roomInfo">
-                               
+                        <label for="room" class="col-md-2 col-form-label">Available Rooms</label>
+                        <div class="col-md-10" id="rooms_div">
+                                <table class="tablesaw no-wrap table-bordered table-hover table" data-tablesaw id="roomInfo">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="border"></th>
+                                            
+                                            <th scope="col" class="border">Description</th>
+                                            <th scope="col" class="border"> Max Guest</th>
+                                            <th scope="col" class="border">Number Of Bed</th>
+                                            <th scope="col" class="border">Amenities</th>
+                                            <th scope="col" class="border">Base Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="checkall-target"> 
+                                    </tbody>
+                                </table>
                         </div>
                     </div>
                     <div class="mb-3 row">
@@ -241,8 +246,8 @@ function handleDateChange(checkin, checkout) {
   if (checkin && checkout) {
     // Call your custom function here
       var _token=$('#_token').val();
-      $('#roomInfo').html(``);
       $("#room_loader").remove();
+      $('#roomInfo tbody').empty();
 	  $('#rooms_div').append('<button id="room_loader" class="btn btn-primary mt-2" type="button" disabled><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...</button>');
 	  $.ajax({
 		  type: "POST",
@@ -256,22 +261,9 @@ function handleDateChange(checkin, checkout) {
 		  {
 			$("#room_loader").remove();  
 			if (Array.isArray(response) && response.length>0){
-                // Target the select element by its ID
-                const selectElement = $('#rooms'); 
-                // Clear existing options
-                selectElement.empty(); 
-                // Add a default or placeholder option (optional)
-                selectElement.append($('<option>', {
-                    value: '',
-                    text: 'Select an option'
-                }));
-                // Loop through the array and append options
+               
                 $.each(response, function(index, item) {
-                    selectElement.append($('<option>', {
-                        value: item?.room_id,
-                        text: item?.room_number + ' → ' + item?.room_type,
-                        'data-details': JSON.stringify(item)
-                    }));
+                   $('#roomInfo tbody').append(`<tr> <td><label><input type="checkbox" id="available_rooms" name="available_rooms[]" class="available-rooms" value="${item?.room_id}"><span class="sr-only"> Select Row</span></label></td><td>${item?.description}</td> <td>${item?.max_guests}</td> <td>${item?.number_of_bed}</td> <td>${typeof item?.amenities === "string" ? JSON.parse(item?.amenities) : item?.amenities}</td> <td><i class="fas fa-rupee-sign"></i> ${item?.base_price}</td> </tr>`);
                 });
 			}
 			else{
@@ -286,30 +278,11 @@ function handleDateChange(checkin, checkout) {
 	  });
   }
 }
-$(document).ready(function() {
-    $('#rooms').on('change', function() {
-        // Get the selected option
-        var selectedOption = $(this).find(':selected');
-        var details = selectedOption.data('details');
-        const bookingDayCount = $("#bookingDayCount").val();
-        var roomDetails = details ? (typeof details === "string" ? JSON.parse(details) : details) : null;
-        if(roomDetails){
-            let total = (roomDetails?.base_price || 0) * (bookingDayCount || 0);
-            // Format to 2 decimals
-            let formattedTotal = total.toFixed(2);
-            $('#roomInfo').html(
-                `<ul class="list-group"> <li class="list-group-item"> <i data-feather="book-open" class="text-info feather-sm me-2"></i> Description : ${roomDetails?.description} </li> <li class="list-group-item"> <i data-feather="users" class="text-info feather-sm me-2"></i> Max Guest : ${roomDetails?.max_guests} </li> <li class="list-group-item"> <i data-feather="home" class="text-info feather-sm me-2"></i> Number Of Bed : ${roomDetails?.number_of_bed} <i class="fas fa-bed"></i> </li> <li class="list-group-item"> <i data-feather="box" class="text-info feather-sm me-2"></i> Base Price : <i class="fas fa-rupee-sign"></i> ${roomDetails?.base_price} </li> <li class="list-group-item"> <i data-feather="shopping-bag" class="text-info feather-sm me-2"></i> Amenities : ${typeof roomDetails?.amenities === "string" ? JSON.parse(roomDetails?.amenities) : roomDetails?.amenities} </li> <li class="list-group-item"> <i data-feather="box" class="text-info feather-sm me-2"></i> Total Price : <i class="fas fa-rupee-sign"></i> ${formattedTotal} </li></ul>`
-            );
-        }else{
-            $('#roomInfo').html(``);
-        }
-        
-    });
-});
+
 function hotelSelect(){
     $('#checkIn').val('');
     $('#checkOut').val('');
-    $('#roomInfo').html(``);
+    $('#roomInfo tbody').empty();
     $("#number_of_days").css("display", "none");
     $("#bookingDayCount").val('');
 }
