@@ -44,6 +44,8 @@ Route::middleware('AdminAuthentication')->group( function () {
     Route::get('/booking/all-booking', [booking::class,'index']);
     Route::get('/booking/new-booking', [booking::class,'newBooking']);
     Route::get('/booking/calendar-view', [booking::class,'calendarView']);
+    Route::post('/booking/available-rooms', [booking::class,'checkAvailableRooms']);
+    Route::post('/booking/new', [booking::class,'bookingSubmit']);
 
     Route::get('/room/room-types', [room::class,'index']);
     Route::get('/room/room-inventory', [room::class,'inventory']);

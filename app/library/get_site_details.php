@@ -95,7 +95,7 @@ use DateTime;
        function getRoomInfo($booking_id){
           $roomBookingData = DB::table('booking_rooms')->where('booking_id',$booking_id)->first();
           if(!empty($roomBookingData)){
-             $roomData = DB::table('rooms')->where('booking_id',$roomBookingData->room_id)->first();
+             $roomData = DB::table('rooms')->where('room_id',$roomBookingData->room_id)->first();
              if(!empty($roomData)){
                  $roomTypeData = DB::table('room_type')->where('type_id',$roomData->room_type_id)->first();
                 return !empty($roomTypeData)?$roomTypeData:[];
@@ -109,6 +109,10 @@ use DateTime;
        function getPaymentInfo($booking_id){
           $paymentData = DB::table('payments')->where('booking_id',$booking_id)->first();
           return !empty($paymentData)?$paymentData:[];
+       }
+       function getRoomType($id){
+          $roomTypeData = DB::table('room_type')->where('type_id',$id)->first();
+          return !empty($roomTypeData)?$roomTypeData:[];
        }
   }
 }
