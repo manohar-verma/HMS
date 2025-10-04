@@ -6,6 +6,7 @@ use App\library\my_functions;
 use App\library\get_site_details; // Get custom function
 use App\Models\admin\booking_mod; 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Session;
 use Redirect;
 use DB;
@@ -93,7 +94,46 @@ class booking extends BaseController {
             Session::put('error',ACCESS_DENIED_ALERT);
             return redirect(ADMIN_URL.'/dashboard');
         }
-        return view('admin.booking.new');
+        $data['guest'] = DB::table('users')->where('is_deleted','0')->where('status','1')->get();
+        $availableRooms =  $today = Carbon::today();
+
+        $data['availableRooms'] = [];
+        return view('admin.booking.new',$data);
+    }
+    function checkAvailableRooms(Request $request)
+    {
+     try {
+       $checkIn   = date('Y-m-d',strtotime($request->input('checkin')));
+       $checkOut  = date('Y-m-d',strtotime($request->input('checkout')));
+         $availableRooms = DB::table('rooms')
+        ->where('is_active', '1')
+        ->whereNotIn('room_id', function ($query) use ($checkIn, $checkOut) {
+            $query->select('room_id')
+                ->from('booking_rooms')
+                ->join('bookings', 'booking_rooms.booking_id', '=', 'bookings.booking_id')
+                ->where(function ($subQuery) use ($checkIn, $checkOut) {
+                    $subQuery->where('bookings.check_in_date', '<', $checkOut)
+                            ->where('bookings.check_out_date', '>', $checkIn);
+                });
+        })->get()->toArray();
+        if(count($availableRooms)>0){
+           
+            foreach($availableRooms as $key=>$room){
+               $roomTypeData = DB::table('room_type')->where('type_id',$room->room_type_id)->where('status','1')->first();
+               if(!empty($roomTypeData)){
+                  $availableRooms[$key]->room_type = $roomTypeData->title;
+               }else{
+                  $availableRooms[$key]->room_type = '';
+               }
+            }
+            return $availableRooms;
+        }else{
+            return [];
+        }
+        } catch (\Exception $e) {
+           
+            return response()->json(['error' => 'Unable to fetch available rooms //'.$e], 500);
+        }
     }
     function calendarView(){
         $user = auth()->guard('admin')->user();

@@ -110,5 +110,9 @@ use DateTime;
           $paymentData = DB::table('payments')->where('booking_id',$booking_id)->first();
           return !empty($paymentData)?$paymentData:[];
        }
+       function getRoomType($id){
+          $roomTypeData = DB::table('room_type')->where('type_id',$id)->first();
+          return !empty($roomTypeData)?$roomTypeData:[];
+       }
   }
 }
