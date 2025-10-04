@@ -141,12 +141,12 @@ class booking extends BaseController {
     function calculateStayDays($checkinDate, $checkoutDate)
     {
         if ($checkinDate && $checkoutDate) {
-            $checkin = Carbon::parse($checkinDate);
-            $checkout = Carbon::parse($checkoutDate);
+            $checkin = Carbon::parse(trim($checkinDate));
+            $checkout = Carbon::parse(trim($checkoutDate));
 
             // Calculate difference in days
-            $daysDiff = $checkout->diffInDays($checkin, false); // false allows negative values
-
+            $daysDiff = $checkin->diffInDays($checkout, false); // false allows negative values
+            echo "Days diff: " . $daysDiff;
             // Ensure at least 1 day
             $numDays = $daysDiff > 0 ? $daysDiff : 1;
 
