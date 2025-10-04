@@ -96,7 +96,7 @@
                                     <thead>
                                         <tr>
                                             <th scope="col" class="border"></th>
-                                            
+                                            <th scope="col" class="border">Room Number</th>
                                             <th scope="col" class="border">Description</th>
                                             <th scope="col" class="border"> Max Guest</th>
                                             <th scope="col" class="border">Number Of Bed</th>
@@ -127,6 +127,28 @@
                             <input class="form-control" type="text" placeholder="Payment Reference"
                                 id="payment_ref" name="payment_ref" rows="3" cols="3" class="form-control"
                                 value="">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="payment_ref" class="col-md-2 col-form-label">Booking Details</label>
+                        <div class="col-md-6">
+                          
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="priceCal">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Room Number</th>
+                                        <th scope="col">Base Price</th>
+                                        <th scope="col">Booking Day's</th>
+                                        <th scope="col">Sub Total</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    
+                                  
+                                    </tbody>
+                                </table>
+                                </div>
                         </div>
                     </div>
                         <div class="form-actions">
@@ -253,6 +275,7 @@ function handleDateChange(checkin, checkout) {
       var _token=$('#_token').val();
       $("#room_loader").remove();
       $('#roomInfo tbody').empty();
+      $("#priceCal tbody").empty();
 	  $('#rooms_div').append('<button id="room_loader" class="btn btn-primary mt-2" type="button" disabled><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...</button>');
 	  $.ajax({
 		  type: "POST",
@@ -268,7 +291,7 @@ function handleDateChange(checkin, checkout) {
 			if (Array.isArray(response) && response.length>0){
                
                 $.each(response, function(index, item) {
-                   $('#roomInfo tbody').append(`<tr> <td><label><input type="checkbox" id="available_rooms" name="available_rooms[]" value="${item?.room_id}"><span class="sr-only"> Select Row</span></label></td><td>${item?.description}</td> <td>${item?.max_guests}</td> <td>${item?.number_of_bed}</td> <td>${typeof item?.amenities === "string" ? JSON.parse(item?.amenities) : item?.amenities}</td> <td><i class="fas fa-rupee-sign"></i> ${item?.base_price}</td> </tr>`);
+                   $('#roomInfo tbody').append(`<tr> <td><label><input type="checkbox" id="available_rooms" name="available_rooms[]" data-base-price="${item?.base_price}" data-room-number="${item?.room_number}" value="${item?.room_id}"><span class="sr-only"> Select Row</span></label></td><td>${item?.room_number}</td><td>${item?.description}</td> <td>${item?.max_guests}</td> <td>${item?.number_of_bed}</td> <td>${typeof item?.amenities === "string" ? JSON.parse(item?.amenities) : item?.amenities}</td> <td><i class="fas fa-rupee-sign"></i> ${item?.base_price}</td> </tr>`);
                 });
 			}
 			else{
@@ -284,10 +307,31 @@ function handleDateChange(checkin, checkout) {
   }
 }
 
+$(document).on('change', '.available-rooms input[type="checkbox"]', function() {
+   
+   $("#priceCal tbody").empty();
+   const numberOfDays = $("#bookingDayCount").val();
+   let totalPrice = 0;
+   $('.available-rooms input[type="checkbox"]:checked').each(function() {
+    let basePrice = $(this).data('base-price'); // fetch data-base-price
+    let roomNumber = $(this).data('room-number');
+    let subTotal = (basePrice || 0) * (numberOfDays || 0);
+    // Format to 2 decimals
+    let formattedSubTotal = subTotal.toFixed(2);
+    totalPrice += subTotal;
+    $("#priceCal tbody").append(`<tr><td>${roomNumber}</td><td>${basePrice}</td><td>${numberOfDays}</td><td>${formattedSubTotal}</td></tr>
+    `);
+    });
+    $("#priceCal tbody").append(`<tr><td style="border-right: 0px !important;"><h4>Total Price</h4></td><td style="border-left: 0px !important;
+    border-right: 0px !important;"></td><td style="border-left: 0px !important;
+    border-right: 0px !important;"></td><td>${totalPrice.toFixed(2)}</td></tr>`);
+    
+});
 function hotelSelect(){
     $('#checkIn').val('');
     $('#checkOut').val('');
     $('#roomInfo tbody').empty();
+    $("#priceCal tbody").empty();
     $("#number_of_days").css("display", "none");
     $("#bookingDayCount").val('');
 }
