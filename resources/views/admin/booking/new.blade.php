@@ -92,7 +92,7 @@
                     <div class="mb-3 row">
                         <label for="room" class="col-md-2 col-form-label">Available Rooms</label>
                         <div class="col-md-10" id="rooms_div">
-                                <table class="tablesaw no-wrap table-bordered table-hover table" data-tablesaw id="roomInfo">
+                                <table class="tablesaw no-wrap table-bordered table-hover table available-rooms" data-tablesaw id="roomInfo">
                                     <thead>
                                         <tr>
                                             <th scope="col" class="border"></th>
@@ -212,7 +212,12 @@
 $(function(){
        
         $('#addEditForm').submit(function(){
-            if ($('#hotels').commonCheck() & $('#guest').commonCheck() & $('#checkIn').commonCheck()  & $('#checkOut').commonCheck() & $('#rooms').commonCheck() & $('#payment_method').commonCheck() & $('#payment_ref').commonCheck()) 
+            if($('.available-rooms input[type="checkbox"]:checked').length == 0){
+                
+                alert("Please select at least one room.");
+                return false;
+            }
+            if ($('#hotels').commonCheck() & $('#guest').commonCheck() & $('#checkIn').commonCheck()  & $('#checkOut').commonCheck() & $('#payment_method').commonCheck() & $('#payment_ref').commonCheck()) 
             { 
                 return true;
                 
@@ -263,7 +268,7 @@ function handleDateChange(checkin, checkout) {
 			if (Array.isArray(response) && response.length>0){
                
                 $.each(response, function(index, item) {
-                   $('#roomInfo tbody').append(`<tr> <td><label><input type="checkbox" id="available_rooms" name="available_rooms[]" class="available-rooms" value="${item?.room_id}"><span class="sr-only"> Select Row</span></label></td><td>${item?.description}</td> <td>${item?.max_guests}</td> <td>${item?.number_of_bed}</td> <td>${typeof item?.amenities === "string" ? JSON.parse(item?.amenities) : item?.amenities}</td> <td><i class="fas fa-rupee-sign"></i> ${item?.base_price}</td> </tr>`);
+                   $('#roomInfo tbody').append(`<tr> <td><label><input type="checkbox" id="available_rooms" name="available_rooms[]" value="${item?.room_id}"><span class="sr-only"> Select Row</span></label></td><td>${item?.description}</td> <td>${item?.max_guests}</td> <td>${item?.number_of_bed}</td> <td>${typeof item?.amenities === "string" ? JSON.parse(item?.amenities) : item?.amenities}</td> <td><i class="fas fa-rupee-sign"></i> ${item?.base_price}</td> </tr>`);
                 });
 			}
 			else{
