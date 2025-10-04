@@ -12,6 +12,9 @@ use App\Http\Controllers\admin\payment;
 use App\Http\Controllers\admin\report;
 use App\Http\Controllers\admin\notifications;
 use App\Http\Controllers\admin\logs;
+use App\Http\Controllers\admin\hotel;
+
+
 
 Route::get('/', [access::class,'index']);
 Route::get('/auth', [access::class,'index']);
@@ -61,5 +64,9 @@ Route::middleware('AdminAuthentication')->group( function () {
     Route::get('/notifications/push', [notifications::class,'pushNotif']);
 
     Route::get('/logs', [logs::class,'index']);
+
+    Route::resource('/hotel',hotel::class);
+    Route::get('/hotel-delete/{id}', [hotel::class,'delete']);
+    Route::post('/hotel-status-change/{id}', [hotel::class,'doStatusChange']);
 
 });
