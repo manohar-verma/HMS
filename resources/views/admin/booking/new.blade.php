@@ -197,6 +197,7 @@
 
             // Set checkout calendar to disable dates before check-in
             $('#checkOut').datepicker('remove'); // Remove previous instance
+            $('#checkOut').val('');
             $('#checkOut').datepicker({
             format: 'dd-mm-yyyy',
             startDate: checkinDate,
@@ -319,6 +320,7 @@ function handleDateChange(checkin, checkout) {
 $(document).on('change', '.available-rooms input[type="checkbox"]', function() {
    
    $("#priceCal tbody").empty();
+   $("#num_guests").val('');
    const numberOfDays = $("#bookingDayCount").val();
    let totalPrice = 0;
    let maxGuestCount = 0;
