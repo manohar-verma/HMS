@@ -159,27 +159,27 @@ class booking extends BaseController {
      try {
        $hotel_id  = $request->input('hotels'); 
        $available_rooms  = $request->input('available_rooms');
-       $checkIn   = date('Y-m-d',strtotime($request->input('checkin')));
-       $checkOut  = date('Y-m-d',strtotime($request->input('checkout')));
+       $checkIn   = date('Y-m-d',strtotime($request->input('checkIn')));
+       $checkOut  = date('Y-m-d',strtotime($request->input('checkOut')));
        $getRoomInfo  = DB::table('rooms')->where('hotel_id',$hotel_id)->whereIn('room_id',$available_rooms)->where('is_active','1')->get();
        $bookingDays  = $this->calculateStayDays($checkIn, $checkOut);
+       $guest_id  = $request->input('guest');
+       $num_guests  = $request->input('num_guests');
+       $payment_method  = $request->input('payment_method');
+       $payment_ref  = $request->input('payment_ref');
         if($getRoomInfo->count()>0){
             $total_amount = 0;
             foreach ($getRoomInfo as $item) {
                 $total_amount += $item->base_price * $bookingDays;
             }
             $total_amount = number_format($total_amount, 2, '.', '');
-            DB::transaction(function ($request, $total_amount, $getRoomInfo, $checkIn, $checkOut,  $hotel_id) { 
-                $guest_id  = $request->input('guest');
-                $num_guests  = $request->input('num_guests');
-                $payment_method  = $request->input('payment_method');
-                $payment_ref  = $request->input('payment_ref');
+           $booking_id = DB::transaction(function  () use ($guest_id, $num_guests, $payment_method, $payment_ref, $total_amount, $getRoomInfo, $checkIn, $checkOut,  $hotel_id) { 
                 
                 // Insert into booking table
                 DB::table('bookings')->insert([
                     'guest_id' => $guest_id,
                     'hotel_id' => $hotel_id,
-                    'booking_ref' => 'admin',
+                    'booking_ref' => 'admin_'.time(),
                     'check_in_date' =>$checkIn,
                     'check_out_date'=>$checkOut,
                     'num_guests'=>$num_guests,
@@ -193,7 +193,7 @@ class booking extends BaseController {
                 foreach ($getRoomInfo as $item) {
                     DB::table('booking_rooms')->insert([
                         'booking_id' => $booking_id, // or use Eloquent's
-                        'room_id' => $$item->room_id,
+                        'room_id' => $item->room_id,
                         'room_count'=>1
                     ]);
                 }
@@ -201,14 +201,15 @@ class booking extends BaseController {
                 DB::table('payments')->insert([
                     'booking_id' => $booking_id,
                     'payment_ref' => $payment_ref,
-                    'payment_method'=> $payment_ref,
+                    'payment_method'=> $payment_method,
                     'amount'=>$total_amount,
                     'status'=>'paid',
                     'paid_at'=>date('Y-m-d')
                 ]);
-                Session::put('success', 'Booked successfully');
-                return redirect(ADMIN_URL.'/booking/edit/'.$booking_id);
+               return $booking_id;
             });
+             Session::put('success', 'Booked successfully');
+             return redirect(ADMIN_URL.'/booking/edit/'.$booking_id);
         }else{
             Log::error('failed to fetch room data: ' . $hotel_id.'/'.$rooms_id);
             Session::put('error','Some thing went wrong please try again');

@@ -82,8 +82,9 @@
                         <th style="cursor:pointer;" onClick="handleFilter('check_out_date','{{$nextSortDirection}}','{{$currentSortFiled}}');">Check Out  @if($currentSortFiled=='check_out_date') <i class="bi-caret-{{$currentSortDirection}}-square-fill" ></i> @endif</th>
                         <th>Room Type</th>
                         <th>Payment Status</th>
-                        <th  style="cursor:pointer;" onClick="handleFilter('booking_status','{{$nextSortDirection}}','{{$currentSortFiled}}');">Booking Status  @if($currentSortFiled=='booking_status') <i class="bi-caret-{{$currentSortDirection}}-square-fill" ></i> @endif</th>
                         <th>Booking Source</th>
+                        <th  style="cursor:pointer;" onClick="handleFilter('booking_status','{{$nextSortDirection}}','{{$currentSortFiled}}');">Booking Status  @if($currentSortFiled=='booking_status') <i class="bi-caret-{{$currentSortDirection}}-square-fill" ></i> @endif</th>
+                        
                         <th>Action</th>
                     </thead>
                     <tbody>
@@ -119,7 +120,7 @@
                              <td>
                                {{$listitem->booking_ref}}
                             </td>
-                             <td id="statusSet{{$listitem->id}}">
+                             <td id="statusSet{{$listitem->booking_id}}">
                                @if($listitem->booking_status == 'success')
                                 <?php 
                                 $StatusHtml = '<i class="fa fa-unlock fa-lg"></i>';
@@ -136,11 +137,11 @@
                              <td>
                               <div class="action-btn">
                                 @if($accessUpdate)
-                                    <a href="{{ADMIN_URL}}/booking/edit/{{$listitem->id}}" class="text-info edit"><i data-feather="edit"
+                                    <a href="{{ADMIN_URL}}/booking/edit/{{$listitem->booking_id}}" class="text-info edit"><i data-feather="edit"
                                             class="feather-sm fill-white"></i></a>
                                 @endif
                                 @if($accessDelete)               
-                                    <a href="{{ADMIN_URL}}/booking/delete/{{$listitem->id}}" class="text-dark  ms-2" onclick="return confirm('Are you sure to delete?');"><i data-feather="trash-2"
+                                    <a href="{{ADMIN_URL}}/booking/delete/{{$listitem->booking_id}}" class="text-dark  ms-2" onclick="return confirm('Are you sure to delete?');"><i data-feather="trash-2"
                                             class="feather-sm fill-white"></i></a>
                                 @endif
                                
