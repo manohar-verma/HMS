@@ -28,6 +28,19 @@
                     <form id="addEditForm" class="form" action="{{ADMIN_URL}}/booking/new" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="_token" id="_token" value="{{ Session::token() }}">
                     <div class="mb-3 row">
+                        <label for="hotels" class="col-md-2 col-form-label">Hotel {!!REQUIRED_STAR!!}</label>
+                        <div class="col-md-10">
+                            <select class="form-select col-12" id="hotels" name="hotels" onChange="hotelSelect();">
+                                <option value="">Choose Hotel</option>
+                                
+                                @foreach($hotels as $item)
+                                <option value="{{$item->hotel_id}}">{{$item->name}} <i class="fas fa-chevron-circle-right"></i> {{$item->address}},{{$item->phone}}</option>
+                                @endforeach
+                               
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
                         <label for="guest" class="col-md-2 col-form-label">Guest {!!REQUIRED_STAR!!}</label>
                        
                              <div class="col-md-5">
@@ -136,10 +149,12 @@
     //$('.datepicker').datepicker({format:'dd-mm-yyyy'});
     $(document).ready(function () {
         // Disable past dates for check-in
-        $('#checkIn').datepicker({
+        
+        $('#checkIn').datepicker('destroy').datepicker({
             format: 'dd-mm-yyyy',
             startDate: new Date(),
-            autoclose: true
+            autoclose: true,
+            todayHighlight: true
         }).on('changeDate', function (e) {
             // Get selected check-in date
             var checkinDate = e.date;
@@ -192,7 +207,7 @@
 $(function(){
        
         $('#addEditForm').submit(function(){
-            if ($('#guest').commonCheck() & $('#checkIn').commonCheck()  & $('#checkOut').commonCheck() & $('#rooms').commonCheck() & $('#payment_method').commonCheck() & $('#payment_ref').commonCheck()) 
+            if ($('#hotels').commonCheck() & $('#guest').commonCheck() & $('#checkIn').commonCheck()  & $('#checkOut').commonCheck() & $('#rooms').commonCheck() & $('#payment_method').commonCheck() & $('#payment_ref').commonCheck()) 
             { 
                 return true;
                 
@@ -218,6 +233,11 @@ $('#checkIn, #checkOut').datepicker({
 });
 
 function handleDateChange(checkin, checkout) {
+  const hotel_id = $('#hotels').val();
+  if(!hotel_id){
+    alert(`Please select hotel first`);
+    return;
+  }  
   if (checkin && checkout) {
     // Call your custom function here
       var _token=$('#_token').val();
@@ -229,7 +249,8 @@ function handleDateChange(checkin, checkout) {
 		  url: "{{ADMIN_URL}}/booking/available-rooms",
 			data: { _token : _token,
                    checkin  : checkin,
-                   checkout : checkout
+                   checkout : checkout,
+                   hotel_id : hotel_id
              },
 		  success: function(response)
 		  {
@@ -285,5 +306,11 @@ $(document).ready(function() {
         
     });
 });
-
+function hotelSelect(){
+    $('#checkIn').val('');
+    $('#checkOut').val('');
+    $('#roomInfo').html(``);
+    $("#number_of_days").css("display", "none");
+    $("#bookingDayCount").val('');
+}
 </script>    
