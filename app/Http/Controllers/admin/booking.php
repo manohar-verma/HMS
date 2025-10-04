@@ -6,6 +6,7 @@ use App\library\my_functions;
 use App\library\get_site_details; // Get custom function
 use App\Models\admin\booking_mod; 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Session;
 use Redirect;
@@ -95,7 +96,7 @@ class booking extends BaseController {
             return redirect(ADMIN_URL.'/dashboard');
         }
         $data['guest'] = DB::table('users')->where('is_deleted','0')->where('status','1')->get();
-        $availableRooms =  $today = Carbon::today();
+        $data['hotels'] = DB::table('hotels')->where('status','1')->get();
 
         $data['availableRooms'] = [];
         return view('admin.booking.new',$data);
@@ -105,8 +106,10 @@ class booking extends BaseController {
      try {
        $checkIn   = date('Y-m-d',strtotime($request->input('checkin')));
        $checkOut  = date('Y-m-d',strtotime($request->input('checkout')));
+       $hotel_id   = $request->input('hotel_id');
          $availableRooms = DB::table('rooms')
         ->where('is_active', '1')
+        ->where('hotel_id', $hotel_id)
         ->whereNotIn('room_id', function ($query) use ($checkIn, $checkOut) {
             $query->select('room_id')
                 ->from('booking_rooms')
@@ -131,9 +134,47 @@ class booking extends BaseController {
             return [];
         }
         } catch (\Exception $e) {
-           
-            return response()->json(['error' => 'Unable to fetch available rooms //'.$e], 500);
+            Log::error('Error fetching available rooms: ' . $e->getMessage());
+            return response()->json(['error' => 'Unable to fetch available rooms //'], 500);
         }
+    }
+    function bookingSubmit(Request $request){
+     try {
+       $hotel_id  = $request->input('hotels'); 
+       $checkIn   = date('Y-m-d',strtotime($request->input('checkin')));
+       $checkOut  = date('Y-m-d',strtotime($request->input('checkout')));
+       $guest_id  = $request->input('guest');
+       $rooms_id  = $request->input('rooms');
+       $payment_method  = $request->input('payment_method');
+       $payment_ref  = $request->input('payment_ref');
+       $bookingDayCount  = $request->input('bookingDayCount');
+        DB::transaction(function () {
+            // Insert into first table
+            DB::table('bookings')->insert([
+                'name' => 'Aarti',
+                'email' => 'aarti@example.com',
+                'password' => bcrypt('secret'),
+            ]);
+
+            // Insert into second table
+            DB::table('profiles')->insert([
+                'user_id' => DB::getPdo()->lastInsertId(), // or use Eloquent's $user->id
+                'bio' => 'Full-stack developer',
+            ]);
+
+            // Insert into third table
+            DB::table('settings')->insert([
+                'user_id' => DB::getPdo()->lastInsertId(),
+                'theme' => 'dark',
+            ]);
+        });
+
+       } catch (\Exception $e){
+          // Rollback happens automatically
+          Log::error('booking Transaction failed: ' . $e->getMessage());
+          Session::put('error','Some thing went wrong please try again');
+          return redirect(ADMIN_URL.'/booking/new-booking');
+       }
     }
     function calendarView(){
         $user = auth()->guard('admin')->user();
