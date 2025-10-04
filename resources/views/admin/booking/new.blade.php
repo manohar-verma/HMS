@@ -31,7 +31,7 @@
                         <label for="guest" class="col-md-2 col-form-label">Guest {!!REQUIRED_STAR!!}</label>
                        
                              <div class="col-md-5">
-                                <select class="select2-with-menu-bg form-control" id="guest" data-bgcolor="success" data-bgcolor-variation="light" style="width: 100%;height: 36px;">
+                                <select class="select2-with-menu-bg form-control" id="guest" name="guest" data-bgcolor="success" data-bgcolor-variation="light" style="width: 100%;height: 36px;">
                                 <option value="">Choose Guest</option>
                                     
                                     @foreach($guest as $item)
@@ -72,6 +72,7 @@
                             <button type="button" class="btn d-flex btn-light-success w-100 d-block text-success font-weight-medium">
                             Number of days <span class="badge ms-auto bg-success" id="count_value"></span>
                             </button>
+                            <input type="hidden" name="bookingDayCount" id="bookingDayCount" value="">
                         </div>
                     </div>
                         <div class="mb-3 row">
@@ -181,15 +182,17 @@
             $("#number_of_days").css("display", "block");
             
             $('#count_value').text(daysDiff > 0 ? `${daysDiff} day(s)` : 'Invalid date range');
+            const numDays = daysDiff>0?daysDiff:1;
+            $("#bookingDayCount").val(numDays);
             }
         });
     });
 
 
-      $(function(){
+$(function(){
        
         $('#addEditForm').submit(function(){
-            if ($('#name').commonCheck() & $('#email').validateEmail() & $('#phone').commonCheck()) 
+            if ($('#guest').commonCheck() & $('#checkIn').commonCheck()  & $('#checkOut').commonCheck() & $('#rooms').commonCheck() & $('#payment_method').commonCheck() & $('#payment_ref').commonCheck()) 
             { 
                 return true;
                 
@@ -200,7 +203,7 @@
 
             return false;
         });
-    });
+});
 
 $('#checkIn, #checkOut').datepicker({
   format: 'dd-mm-yyyy',
@@ -217,7 +220,8 @@ $('#checkIn, #checkOut').datepicker({
 function handleDateChange(checkin, checkout) {
   if (checkin && checkout) {
     // Call your custom function here
-    var _token=$('#_token').val();
+      var _token=$('#_token').val();
+      $('#roomInfo').html(``);
       $("#room_loader").remove();
 	  $('#rooms_div').append('<button id="room_loader" class="btn btn-primary mt-2" type="button" disabled><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...</button>');
 	  $.ajax({
@@ -266,15 +270,17 @@ $(document).ready(function() {
         // Get the selected option
         var selectedOption = $(this).find(':selected');
         var details = selectedOption.data('details');
+        const bookingDayCount = $("#bookingDayCount").val();
         var roomDetails = details ? (typeof details === "string" ? JSON.parse(details) : details) : null;
         if(roomDetails){
+            let total = (roomDetails?.base_price || 0) * (bookingDayCount || 0);
+            // Format to 2 decimals
+            let formattedTotal = total.toFixed(2);
             $('#roomInfo').html(
-                `<ul class="list-group"> <li class="list-group-item"> <i data-feather="book-open" class="text-info feather-sm me-2"></i> Description : ${roomDetails?.description} </li> <li class="list-group-item"> <i data-feather="users" class="text-info feather-sm me-2"></i> Max Guest : ${roomDetails?.max_guests} </li> <li class="list-group-item"> <i data-feather="home" class="text-info feather-sm me-2"></i> Number Of Bed : ${roomDetails?.number_of_bed} <i class="fas fa-bed"></i> </li> <li class="list-group-item"> <i data-feather="box" class="text-info feather-sm me-2"></i> Base Price : <i class="fas fa-rupee-sign"></i> ${roomDetails?.base_price} </li> <li class="list-group-item"> <i data-feather="shopping-bag" class="text-info feather-sm me-2"></i> Amenities : ${typeof roomDetails?.amenities === "string" ? JSON.parse(roomDetails?.amenities) : roomDetails?.amenities} </li> </ul>`
+                `<ul class="list-group"> <li class="list-group-item"> <i data-feather="book-open" class="text-info feather-sm me-2"></i> Description : ${roomDetails?.description} </li> <li class="list-group-item"> <i data-feather="users" class="text-info feather-sm me-2"></i> Max Guest : ${roomDetails?.max_guests} </li> <li class="list-group-item"> <i data-feather="home" class="text-info feather-sm me-2"></i> Number Of Bed : ${roomDetails?.number_of_bed} <i class="fas fa-bed"></i> </li> <li class="list-group-item"> <i data-feather="box" class="text-info feather-sm me-2"></i> Base Price : <i class="fas fa-rupee-sign"></i> ${roomDetails?.base_price} </li> <li class="list-group-item"> <i data-feather="shopping-bag" class="text-info feather-sm me-2"></i> Amenities : ${typeof roomDetails?.amenities === "string" ? JSON.parse(roomDetails?.amenities) : roomDetails?.amenities} </li> <li class="list-group-item"> <i data-feather="box" class="text-info feather-sm me-2"></i> Total Price : <i class="fas fa-rupee-sign"></i> ${formattedTotal} </li></ul>`
             );
         }else{
-            $('#roomInfo').html(
-            ``
-         );
+            $('#roomInfo').html(``);
         }
         
     });
