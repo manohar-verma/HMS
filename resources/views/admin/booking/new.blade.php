@@ -167,7 +167,7 @@
                                     <i data-feather="save" class="feather-sm me-1 fill-icon"></i> Confirm Booking
                                 </div>
                             </button>
-                            <button type="button" class="btn btn-danger rounded-pill px-4 ms-2 text-white" onclick="window.location.href='{{ADMIN_URL}}/users/guest'">Cancel</button>
+                            <button type="button" class="btn btn-danger rounded-pill px-4 ms-2 text-white" onclick="window.location.href='{{ADMIN_URL}}/booking/all-booking'">Cancel</button>
                         </div>
                            </div>
                     </form>

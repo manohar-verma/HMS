@@ -101,6 +101,30 @@ class booking extends BaseController {
         $data['availableRooms'] = [];
         return view('admin.booking.new',$data);
     }
+    function editBooking($booking_id){
+        $user = auth()->guard('admin')->user();
+        $checkUserAccess = $this->_myFun->validateUserAccess('all-booking','update');
+        if($checkUserAccess == false)
+        {
+            Session::put('error',ACCESS_DENIED_ALERT);
+            return redirect(ADMIN_URL.'/dashboard');
+        }
+        $bookingData = DB::table('bookings')->where('booking_id',$booking_id)->first();
+        if(!empty($bookingData)){
+            $data['guest'] = DB::table('users')->where('is_deleted','0')->where('status','1')->get();
+            $data['hotels'] = DB::table('hotels')->where('status','1')->get();
+            $data['bookedRoomInfo'] = DB::table('booking_rooms')->where('booking_id',$booking_id)->get();
+            $data['paymentInfo'] = DB::table('payments')->where('booking_id',$booking_id)->first();
+            $data['bookingData'] = $bookingData;
+            $data['bookingDays'] = $this->calculateStayDays($bookingData->check_in_date, $bookingData->check_out_date);
+            $data['availableRooms'] = [];
+            //echo "<pre>"; print_r($data);die;
+            return view('admin.booking.edit',$data);
+        }else{
+            Session::put('error', 'Sorry booking not found');
+            return redirect(ADMIN_URL.'/booking/all-booking');
+        }
+    }
     function checkAvailableRooms(Request $request)
     {
      try {
@@ -146,7 +170,7 @@ class booking extends BaseController {
 
             // Calculate difference in days
             $daysDiff = $checkin->diffInDays($checkout, false); // false allows negative values
-            echo "Days diff: " . $daysDiff;
+           
             // Ensure at least 1 day
             $numDays = $daysDiff > 0 ? $daysDiff : 1;
 
@@ -194,7 +218,8 @@ class booking extends BaseController {
                     DB::table('booking_rooms')->insert([
                         'booking_id' => $booking_id, // or use Eloquent's
                         'room_id' => $item->room_id,
-                        'room_count'=>1
+                        'room_count'=>1,
+                        'room_base_price'=>$item->base_price
                     ]);
                 }
                 // Insert into payments table
@@ -209,7 +234,7 @@ class booking extends BaseController {
                return $booking_id;
             });
              Session::put('success', 'Booked successfully');
-             return redirect(ADMIN_URL.'/booking/edit/'.$booking_id);
+             return redirect(ADMIN_URL.'/booking/all-booking/'.$booking_id);
         }else{
             Log::error('failed to fetch room data: ' . $hotel_id.'/'.$rooms_id);
             Session::put('error','Some thing went wrong please try again');

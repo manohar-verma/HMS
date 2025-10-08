@@ -114,5 +114,9 @@ use DateTime;
           $roomTypeData = DB::table('room_type')->where('type_id',$id)->first();
           return !empty($roomTypeData)?$roomTypeData:[];
        }
+       function getBookedRoomInfo($room_id){
+          $roomData = DB::table('rooms')->where('room_id',$room_id)->first();
+          return !empty($roomData)?$roomData:[];
+       }
   }
 }
