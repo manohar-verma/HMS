@@ -2,9 +2,8 @@
 namespace App\Http\Controllers\admin;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\MessageBag; 
-use App\Models\admin\settings_mod; // Fetch value from Aircraft Table
-use App\library\fn_image_resize; // Get custom function
 use App\library\get_site_details; // Get custom function
+use App\library\my_functions;
 use Illuminate\Http\Request;
 use Session;
 use Redirect;
@@ -24,11 +23,11 @@ class payment extends BaseController {
     protected $_myFun;
     
     function __construct(){
-         $this->_myFunImage = new Fn_image_resize;
+         $this->_myFun = new My_functions;
          $this->_myFunUserRole = new get_site_details;
     }
     
-    function index()
+    function index(Request $request)
     {
         $user = auth()->guard('admin')->user();
         $userAccess = $this->_myFunUserRole->getUserAccess($user->id);
@@ -38,8 +37,50 @@ class payment extends BaseController {
              Session::put('error', 'Access denied to this page');
             return redirect(ADMIN_URL.'/dashboard');
         } 
-
-        return view('admin.payment.index');
+        $data['accessAddNew'] = $this->_myFun->validateUserAccess('payments-list','add-new');
+        $data['accessUpdate'] = $this->_myFun->validateUserAccess('payments-list','update');
+        $data['accessDelete'] = $this->_myFun->validateUserAccess('payments-list','delete');
+        
+        $searchTerm = $request->input('searchTerm');
+        $page   = $request->input('page');
+        $orderby = $request->input('orderby');
+        $sortval = $request->input('sortval');
+        $searchResults = DB::table('payments')
+        ->select('payments.*');
+       
+            if($searchTerm != ''){
+                $searchResults->where('booking_id','LIKE', '%'.$searchTerm.'%')
+                 ->orWhere('payment_ref', 'LIKE', '%' . $searchTerm . '%');
+            }
+           
+           $PerPage = ADMIN_PER_PAGE;
+           $currentPage = $page? $page : 1;
+           if((!is_numeric($currentPage)) || ($currentPage < 1) ){
+                $currentPage = 1;
+            }
+            $startpoint = (floor($currentPage) * $PerPage) - $PerPage;
+        
+         $orderByArray = array('payment_id','paid_at','status');
+         $orderTypeArray = array('ASC','DESC');
+          
+        $orderBy = 'payment_id';
+        $ordertype = 'DESC';
+        
+        $orderby = $request->input('orderby');
+        $sortval = $request->input('sortval');
+        if (($orderby != '') && (in_array($orderby, $orderByArray))){
+            $orderBy = $orderby;
+        }
+        if (($sortval != '') && (in_array($sortval, $orderTypeArray))){
+            $ordertype = $sortval;
+        }
+        
+        $totlaResult = $searchResults->get()->count();
+        $searchResultsList = $searchResults->take($PerPage)->offset($startpoint)->orderBy($orderBy, $ordertype)->get();
+        
+        $data['list'] = $searchResultsList;
+        $data['pagination'] = ($this->_myFun->myPaginationAjax($totlaResult,ADMIN_PER_PAGE,$currentPage,''));
+        return view('admin.payment.index',$data);
     }
   
     function invoices(){

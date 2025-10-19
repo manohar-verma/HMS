@@ -184,10 +184,15 @@
                                     <div class="card-body border-top">
                                         <button type="submit" class="btn btn-success rounded-pill px-4">
                                             <div class="d-flex align-items-center">
-                                                <i data-feather="save" class="feather-sm me-1 fill-icon"></i> Confirm Booking
+                                                <i data-feather="save" class="feather-sm me-1 fill-icon"></i> Update Booking
                                             </div>
                                         </button>
-                                        <button type="button" class="btn btn-danger rounded-pill px-4 ms-2 text-white" onclick="window.location.href='{{ADMIN_URL}}/booking/all-booking'">Cancel</button>
+                                        <button type="submit" class="btn btn-warning rounded-pill px-4">
+                                            <div class="d-flex align-items-center">
+                                                <i data-feather="save" class="feather-sm me-1 fill-icon"></i> Cancel Booking
+                                            </div>
+                                        </button>
+                                        <button type="button" class="btn btn-danger rounded-pill px-4 ms-2 text-white" onclick="window.location.href='{{ADMIN_URL}}/booking/all-booking'">Return to all</button>
                                     </div>
                                     </div>
                                 </form>
