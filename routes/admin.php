@@ -49,6 +49,7 @@ Route::middleware('AdminAuthentication')->group( function () {
     Route::get('/room/room-inventory', [room::class,'inventory']);
     Route::get('/room/availability', [room::class,'availability']);
     Route::get('/room/rate-plans', [room::class,'ratePlans']);
+    Route::get('/room/amenities', [room::class,'amenities']);
 
     Route::get('/payment/payments-list', [payment::class,'index']);
     Route::get('/payment/invoices', [payment::class,'invoices']);
