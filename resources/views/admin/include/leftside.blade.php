@@ -128,7 +128,7 @@
                             @endif
                             @if(in_array("room-inventory", $userRoles))
                             <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                    href="{{ADMIN_URL}}/room/room-inventory" aria-expanded="false">🏠<span class="hide-menu">Room Inventory</span></a></li>
+                                    href="{{ADMIN_URL}}/room/room-inventory" aria-expanded="false">🏠<span class="hide-menu">Rooms</span></a></li>
                             @endif
                             @if(in_array("availability", $userRoles))
                             <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"

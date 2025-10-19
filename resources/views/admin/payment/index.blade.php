@@ -3,6 +3,7 @@
   use App\library\get_site_details; 
  
   $get_site_details = new get_site_details;
+  $paymentMethodArray = ['1'=>'Net Banking/NEFT','2'=>'UPI','3'=>'Cash','4'=>'Other'];
 ?>
 <?php
   $currentSortDirection = 'down';
@@ -99,7 +100,7 @@
                                  {{$listitem->payment_id}}
                             </td>
                             <td>
-                                 {{$listitem->booking_id}}
+                                 <a href="{{ADMIN_URL}}/booking/all-booking/{{$listitem->booking_id}}" target="_blank">{{$listitem->booking_id}}</a>
                             </td>
                             
                             <td>
@@ -107,7 +108,7 @@
                             </td>
                            
                              <td>
-                              {{$listitem->payment_method}}
+                              {{isset($paymentMethodArray[$listitem->payment_method])?$paymentMethodArray[$listitem->payment_method]:''}}
                             </td>
                             <td>
                                 {{$listitem->payment_ref}}
@@ -136,7 +137,7 @@
                              <td>
                               <div class="action-btn">
                                 @if($accessUpdate)
-                                    <a href="{{ADMIN_URL}}/payment/payment-list/{{$listitem->payment_id}}" class="text-info edit"><i data-feather="edit"
+                                    <a href="{{ADMIN_URL}}/payment/invoices/{{$listitem->payment_id}}" class="text-info edit"><i data-feather="printer"
                                             class="feather-sm fill-white"></i></a>
                                 @endif
                                 @if($accessDelete)               
