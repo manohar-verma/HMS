@@ -137,7 +137,7 @@
                              <td>
                               <div class="action-btn">
                                 @if($accessUpdate)
-                                    <a href="{{ADMIN_URL}}/payment/invoices/{{$listitem->payment_id}}" class="text-info edit"><i data-feather="printer"
+                                    <a href="{{ADMIN_URL}}/payment/invoices/{{$listitem->payment_id}}" class="text-info edit" target="_blank"><i data-feather="printer"
                                             class="feather-sm fill-white"></i></a>
                                 @endif
                                 @if($accessDelete)               

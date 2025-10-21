@@ -83,7 +83,7 @@ class payment extends BaseController {
         return view('admin.payment.index',$data);
     }
   
-    function invoices(){
+    function invoices(Request $request){
         $user = auth()->guard('admin')->user();
         $userAccess = $this->_myFunUserRole->getUserAccess($user->id);
         $accessRole=(explode(",",$userAccess));
@@ -93,6 +93,30 @@ class payment extends BaseController {
             return redirect(ADMIN_URL.'/dashboard');
         } 
         return view('admin.payment.invoices');
+    }
+    function invoicesSearch(Request $request){
+       $checkUserAccess = $this->_myFun->validateUserAccess('invoices','update');
+        if($checkUserAccess == false)
+        {
+            Session::put('error',ACCESS_DENIED_ALERT);
+            return redirect(ADMIN_URL.'/dashboard');
+        }
+        $invoice_search = $request->input('invoice_search');
+         $searchResults = DB::table('payments');
+       if($invoice_search != ''){
+        $searchResults->where('booking_id',$invoice_search)->orWhere('payment_id',$invoice_search);
+        }
+        $resultData =  $searchResults->first();
+        if(!empty($resultData)){
+            return redirect(ADMIN_URL.'/payment/invoices/'.$resultData->payment_id);
+        }else{
+            Session::put('error', 'Invoice not found !');
+            return redirect(ADMIN_URL.'/payment/invoices');
+        }    
+    }
+    function printInvoice($paymentId){
+       $data[''] ='';   
+      return view('admin.payment.print',$data);
     }
     function settings(){
         $user = auth()->guard('admin')->user();

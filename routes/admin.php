@@ -54,6 +54,8 @@ Route::middleware('AdminAuthentication')->group( function () {
     Route::get('/payment/payments-list', [payment::class,'index']);
     Route::get('/payment/invoices', [payment::class,'invoices']);
     Route::get('/payment/gateway-settings', [payment::class,'settings']);
+    Route::post('/payment/invoicesSearch', [payment::class,'invoicesSearch']);
+    Route::get('/payment/invoices/{payment_id}', [payment::class,'printInvoice']);
 
     Route::get('/report/occupancy', [report::class,'index']);
     Route::get('/report/revenue', [report::class,'revenue']);

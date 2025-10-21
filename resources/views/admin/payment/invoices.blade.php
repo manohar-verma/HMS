@@ -23,12 +23,12 @@
                 <div class="card-body">
                     
                     <h5 class="card-subtitle mb-3 border-bottom pb-3">New Booking</h5>
-                    <form id="addEditForm" class="form" action="{{ADMIN_URL}}/booking/new" method="GET" enctype="multipart/form-data">
-                   
+                    <form id="addEditForm" class="form" action="{{ADMIN_URL}}/payment/invoicesSearch" method="POST" enctype="multipart/form-data">
+                   <input type="hidden" name="_token" id="_token" value="{{ Session::token() }}">
                     <div class="mb-3 row">
                         <label for="hotels" class="col-md-2 col-form-label">Booking/Payment ID</label>
-                        <div class="col-md-10">
-                           <input class="form-control" type="text" placeholder="Payment Reference"
+                        <div class="col-md-5">
+                           <input class="form-control" type="text" placeholder="Payment/Booking ID"
                                 id="invoice_search" name="invoice_search" rows="3" cols="3" class="form-control"
                                 value="">
                         </div>
