@@ -6,6 +6,8 @@ use App\library\my_functions;
 use App\library\get_site_details; // Get custom function
 use App\Models\admin\booking_mod; 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 use Session;
 use Redirect;
 use DB;
