@@ -1,0 +1,100 @@
+@include('admin.include.header')
+<div class="container-fluid">
+    <div class="row page-titles">
+        <div class="col-md-5 col-12 align-self-center">
+            <h3 class="text-themecolor mb-0">Room Type</h3>
+        </div> 
+        <div class="col-md-7 col-12 align-self-center d-none d-md-flex justify-content-end">
+            <ol class="breadcrumb mb-0 p-0 bg-transparent">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                <li class="breadcrumb-item active d-flex align-items-center">Room Type</li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    
+                    <h5 class="card-subtitle mb-3 border-bottom pb-3">Edit Room Type</h5>
+                    <form id="addEditForm" class="form" action="{{ADMIN_URL}}/room-type/{{$editData->type_id}}" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="_token" value="{{ Session::token() }}">
+                    <input name="_method" type="hidden" value="PUT">
+                    
+                    
+
+                  
+                    <div class="mb-3 row">
+                        <label for="title" class="col-md-2 col-form-label">Title {!!REQUIRED_STAR!!}</label>
+                        <div class="col-md-10">
+                            <input class="form-control" type="text" placeholder="Title"
+                                id="title" name="title" rows="3" cols="3" 
+                                value="{{$editData->title}}">
+                        </div>
+                    </div>
+
+                    
+
+                     
+                        <div class="mb-3 row">
+                            <label class="col-md-2 col-form-label">Status</label>
+                            <div class="col-md-10">
+                                <div class="form-check">
+                                    <input type="radio" id="Active" name="status" class="form-check-input" value="true" @if($editData->status == true) checked="true" @endif>
+                                    <label class="form-check-label" for="Active">Active</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="radio" id="Deactivate" name="status" class="form-check-input" value="false" @if($editData->status == false) checked="true" @endif>
+                                    <label class="form-check-label" for="Deactivate">Deactivate</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                        <div class="card-body border-top">
+                            <button type="submit" class="btn btn-success rounded-pill px-4">
+                                <div class="d-flex align-items-center">
+                                    <i data-feather="save" class="feather-sm me-1 fill-icon"></i> Save
+                                </div>
+                            </button>
+                            <button type="button" class="btn btn-danger rounded-pill px-4 ms-2 text-white" onclick="window.location.href='{{ADMIN_URL}}/room-type'">Cancel</button>
+                        </div>
+                           </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@include('admin.include.footer')
+<script src="{{SITE_URL}}/assets/common/ckeditor/ckeditor.js"></script>
+<script src=" {{SITE_URL}}/assets/common/ckeditor/samples/js/sample.js"></script>
+<script src="{{SITE_URL}}/assets/admin/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+<script data-sample="2">
+        CKEDITOR.replace('short_description', {
+            height: 400
+        });
+    </script>
+
+<script>
+     $(function(){
+        $('#addEditForm').submit(function(){
+            
+            
+            if ($('#name').commonCheck() & $('#hotel_id').commonCheck() & $('#description').commonCheck() & $('#base_price').commonCheck() & $('#capacity').commonCheck() ) 
+            {
+                
+            }
+            if (document.querySelector('.ErrorMag') !== null) {
+            $('html, body').animate({
+                scrollTop: ($('.ErrorMag').offset().top - 300)
+            }, 2000);
+            return false;
+              }
+        });
+        
+            $('.datepicker').datepicker({format:'dd-mm-yyyy'});
+      
+    }); 
+   
+</script>    
