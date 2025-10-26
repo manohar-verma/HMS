@@ -75,4 +75,16 @@ Route::middleware('AdminAuthentication')->group( function () {
     Route::get('/hotel-delete/{id}', [hotel::class,'delete']);
     Route::post('/hotel-status-change/{id}', [hotel::class,'doStatusChange']);
 
+    Route::resource('/room',room_controller::class)->except('show');
+    Route::get('/room/delete/{id}', [room_controller::class,'delete']);
+    Route::post('/room/changeStatus/{id}', [hotel::class,'doStatusChange']);
+
+    Route::resource('/room-type',room_type::class)->except('show');
+    Route::get('/room-type/delete/{id}', [room_type::class,'delete']);
+    Route::POST('/room-type/changeStatus/{id}', [room_type::class,'doStatusChange']);
+
+     Route::resource('/amenities',amenities::class)->except('show');
+    Route::get('/amenities/delete/{id}', [amenities::class,'delete']);
+    Route::POST('/amenities/changeStatus/{id}', [amenities::class,'doStatusChange']);
+
 });
