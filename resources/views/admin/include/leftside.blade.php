@@ -114,7 +114,7 @@
                         </li>
                         @endif
 
-                        @if(in_array("room-types", $userRoles) || in_array("room-inventory", $userRoles) || in_array("availability", $userRoles) || in_array("rate-plans", $userRoles)) 
+                        @if(in_array("room-types", $userRoles) || in_array("room-inventory", $userRoles) || in_array("availability", $userRoles) || in_array("rate-plans", $userRoles) || in_array("amenities", $userRoles)) 
                         <li class="sidebar-item">
                             <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
                                 aria-expanded="false">
@@ -128,11 +128,15 @@
                             @endif
                             @if(in_array("room-inventory", $userRoles))
                             <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                    href="{{ADMIN_URL}}/room/room-inventory" aria-expanded="false">🏠<span class="hide-menu">Room Inventory</span></a></li>
+                                    href="{{ADMIN_URL}}/room/room-inventory" aria-expanded="false">🏠<span class="hide-menu">Rooms</span></a></li>
                             @endif
                             @if(in_array("availability", $userRoles))
                             <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
                                     href="{{ADMIN_URL}}/room/availability" aria-expanded="false">📆<span class="hide-menu">Availability</span></a></li>
+                            @endif
+                             @if(in_array("amenities", $userRoles))
+                            <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="{{ADMIN_URL}}/room/amenities" aria-expanded="false">📆<span class="hide-menu">Amenities</span></a></li>
                             @endif
                             @if(in_array("rate-plans", $userRoles))
                             <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"

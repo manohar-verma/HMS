@@ -46,15 +46,19 @@ Route::middleware('AdminAuthentication')->group( function () {
     Route::get('/booking/calendar-view', [booking::class,'calendarView']);
     Route::post('/booking/available-rooms', [booking::class,'checkAvailableRooms']);
     Route::post('/booking/new', [booking::class,'bookingSubmit']);
+    Route::get('/booking/all-booking/{id}', [booking::class,'editBooking']);
 
     Route::get('/room/room-types', [room::class,'index']);
     Route::get('/room/room-inventory', [room::class,'inventory']);
     Route::get('/room/availability', [room::class,'availability']);
     Route::get('/room/rate-plans', [room::class,'ratePlans']);
+    Route::get('/room/amenities', [room::class,'amenities']);
 
     Route::get('/payment/payments-list', [payment::class,'index']);
     Route::get('/payment/invoices', [payment::class,'invoices']);
     Route::get('/payment/gateway-settings', [payment::class,'settings']);
+    Route::post('/payment/invoicesSearch', [payment::class,'invoicesSearch']);
+    Route::get('/payment/invoices/{payment_id}', [payment::class,'printInvoice']);
 
     Route::get('/report/occupancy', [report::class,'index']);
     Route::get('/report/revenue', [report::class,'revenue']);
