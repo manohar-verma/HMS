@@ -38,7 +38,7 @@
                                         <button type="submit" class="btn btn-success"><span
                                                 class="fas fa-search"></span>
                                             </button>
-                                            <button type="button" onclick="window.location='{{ADMIN_URL}}/users/guest'"
+                                            <button type="button" onclick="window.location='{{ADMIN_URL}}/guest'"
                                             class="btn btn-danger">Reset
                                         </button>
                                         
@@ -50,7 +50,7 @@
                 <div
                     class="col-md-5 col-xl-5 text-end d-flex justify-content-md-end justify-content-center mt-3 mt-md-0">
                     @if($accessAddNew)
-                    <a href="{{ADMIN_URL}}/users/guest/create" id="btn-add-contact" class="btn btn-info">
+                    <a href="{{ADMIN_URL}}/guest/create" id="btn-add-contact" class="btn btn-info">
                     <i data-feather="users" class="feather-sm fill-white me-1"> </i>
                     Add User</a>
                     @endif
@@ -102,7 +102,7 @@
                                 @endif
                                 <div class="action-btn">
                                 @if($accessUpdate)
-                                    <a href="{{ADMIN_URL}}/users/guest/{{$listitem->id}}/edit" class="text-info edit"><i data-feather="edit"
+                                    <a href="{{ADMIN_URL}}/guest/{{$listitem->id}}/edit" class="text-info edit"><i data-feather="edit"
                                             class="feather-sm fill-white"></i></a>
                                 @endif 
                                 @if($accessDelete)              

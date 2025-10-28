@@ -33,7 +33,7 @@
                                         <button type="submit" class="btn btn-success "><span
                                                 class="fas fa-search"></span>
                                             </button>
-                                            <button type="button" onclick="window.location='{{ADMIN_URL}}/users/sub-admin'"
+                                            <button type="button" onclick="window.location='{{ADMIN_URL}}/sub-admin'"
                                             class="btn btn-danger ">Reset
                                         </button>
                                         
@@ -45,7 +45,7 @@
                 <div
                     class="col-md-8 col-xl-10 text-end d-flex justify-content-md-end justify-content-center mt-3 mt-md-0">
                     @if($accessAddNew)
-                    <a href="{{ADMIN_URL}}/users/sub-admin/create" id="btn-add-contact" class="btn btn-info">
+                    <a href="{{ADMIN_URL}}/sub-admin/create" id="btn-add-contact" class="btn btn-info">
                     <i data-feather="user" class="feather-sm fill-white me-1"> </i>
                     Add User(Admin)</a>
                     @endif
@@ -97,7 +97,7 @@
                             <td>
                                 <div class="action-btn">
                                 @if($accessUpdate)
-                                    <a href="{{ADMIN_URL}}/users/sub-admin/{{$listitem->id}}/edit" class="text-info edit"><i data-feather="edit"
+                                    <a href="{{ADMIN_URL}}/sub-admin/{{$listitem->id}}/edit" class="text-info edit"><i data-feather="edit"
                                             class="feather-sm fill-white"></i></a>
                                  @endif
                                  @if($accessDelete)           

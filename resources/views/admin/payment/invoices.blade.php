@@ -22,8 +22,8 @@
             <div class="card">
                 <div class="card-body">
                     
-                    <h5 class="card-subtitle mb-3 border-bottom pb-3">New Booking</h5>
-                    <form id="addEditForm" class="form" action="{{ADMIN_URL}}/payment/invoicesSearch" method="POST" enctype="multipart/form-data">
+                    <h5 class="card-subtitle mb-3 border-bottom pb-3">Invoice</h5>
+                    <form id="addEditForm" class="form" action="{{ADMIN_URL}}/invoicesSearch" method="POST" enctype="multipart/form-data">
                    <input type="hidden" name="_token" id="_token" value="{{ Session::token() }}">
                     <div class="mb-3 row">
                         <label for="hotels" class="col-md-2 col-form-label">Booking/Payment ID</label>
@@ -41,7 +41,7 @@
                                     <i data-feather="search" class="feather-sm me-1 fill-icon"></i>Search
                                 </div>
                             </button>
-                            <button type="button" class="btn btn-danger rounded-pill px-4 ms-2 text-white" onclick="window.location.href='{{ADMIN_URL}}/payment/payment-list'">Cancel</button>
+                            <button type="button" class="btn btn-danger rounded-pill px-4 ms-2 text-white" onclick="window.location.href='{{ADMIN_URL}}/payment-list'">Cancel</button>
                         </div>
                            </div>
                     </form>

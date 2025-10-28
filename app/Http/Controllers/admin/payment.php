@@ -108,10 +108,10 @@ class payment extends BaseController {
         }
         $resultData =  $searchResults->first();
         if(!empty($resultData)){
-            return redirect(ADMIN_URL.'/payment/invoices/'.$resultData->payment_id);
+            return redirect(ADMIN_URL.'/invoices/'.$resultData->payment_id);
         }else{
             Session::put('error', 'Invoice not found !');
-            return redirect(ADMIN_URL.'/payment/invoices');
+            return redirect(ADMIN_URL.'/invoices');
         }    
     }
     function printInvoice($paymentId){

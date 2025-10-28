@@ -19,7 +19,7 @@
                 <div class="card-body">
                     
                     <h5 class="card-subtitle mb-3 border-bottom pb-3">Add Users</h5>
-                    <form id="addEditForm" class="form" action="{{ADMIN_URL}}/users/guest" method="POST" enctype="multipart/form-data">
+                    <form id="addEditForm" class="form" action="{{ADMIN_URL}}/guest" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="_token" value="{{ Session::token() }}">
                     
                      <div class="mb-3 row">
@@ -102,7 +102,7 @@
                                     <i data-feather="save" class="feather-sm me-1 fill-icon"></i> Save
                                 </div>
                             </button>
-                            <button type="button" class="btn btn-danger rounded-pill px-4 ms-2 text-white" onclick="window.location.href='{{ADMIN_URL}}/users/guest'">Cancel</button>
+                            <button type="button" class="btn btn-danger rounded-pill px-4 ms-2 text-white" onclick="window.location.href='{{ADMIN_URL}}/guest'">Cancel</button>
                         </div>
                            </div>
                     </form>

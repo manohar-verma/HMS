@@ -20,7 +20,7 @@
                 <div class="card-body">
 
                     <h5 class="card-subtitle mb-3 border-bottom pb-3">Edit Users</h5>
-                    <form id="addEditForm" class="form" action="{{ADMIN_URL}}/users/guest/{{$usersData->id}}" method="POST"
+                    <form id="addEditForm" class="form" action="{{ADMIN_URL}}/guest/{{$usersData->id}}" method="POST"
                         enctype="multipart/form-data">
                         <input name="_method" type="hidden" value="PUT">
                         <input type="hidden" name="_token" value="{{ Session::token() }}">
@@ -122,7 +122,7 @@
                                     </div>
                                 </button>
                                 <button type="button" class="btn btn-danger rounded-pill px-4 ms-2 text-white"
-                                    onclick="window.location.href='{{ADMIN_URL}}/users/guest'">Cancel</button>
+                                    onclick="window.location.href='{{ADMIN_URL}}/guest'">Cancel</button>
                             </div>
                         </div>
                     </form>

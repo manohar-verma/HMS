@@ -22,7 +22,7 @@ $noAccessLevel = ['change-password','setting'];
                 <div class="card-body">
 
                     <h5 class="card-subtitle mb-3 border-bottom pb-3">Add user</h5>
-                    <form id="addEditForm" class="form" action="{{ADMIN_URL}}/users/sub-admin" method="POST"
+                    <form id="addEditForm" class="form" action="{{ADMIN_URL}}/sub-admin" method="POST"
                         enctype="multipart/form-data">
                         <input type="hidden" name="_token" value="{{ Session::token() }}">
                         <div class="mb-3 row">
@@ -120,7 +120,7 @@ $noAccessLevel = ['change-password','setting'];
                                     </div>
                                 </button>
                                 <button type="button" class="btn btn-danger rounded-pill px-4 ms-2 text-white"
-                                    onclick="window.location.href='{{ADMIN_URL}}/users/sub-admin'">Cancel</button>
+                                    onclick="window.location.href='{{ADMIN_URL}}/sub-admin'">Cancel</button>
                             </div>
                         </div>
                     </form>

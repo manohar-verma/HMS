@@ -14,12 +14,12 @@ $(function() {
       url = url.split("?")[0];
         var path = url.replace(window.location.protocol + "//" + window.location.host + "/", "");
         path = path.split("?")[0];
-        if(countUrl==8)
+        if(countUrl==7)
         {
             path = path.slice(0, path.lastIndexOf("/"));
             url = url.slice(0, url.lastIndexOf("/"));
         }
-        if(countUrl==9)
+        if(countUrl==8)
         {
             path = path.slice(0, path.lastIndexOf('/', path.lastIndexOf('/')-1));
             url = url.slice(0, url.lastIndexOf('/', url.lastIndexOf('/')-1));
