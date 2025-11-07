@@ -59,7 +59,7 @@
                                         <button type="submit" class="btn btn-success"><span
                                                 class="fas fa-search"></span>
                                             </button>
-                                            <button type="button" onclick="window.location='{{ADMIN_URL}}/payment/payments-list'"
+                                            <button type="button" onclick="window.location='{{ADMIN_URL}}/payments-list'"
                                             class="btn btn-danger">Reset
                                         </button>
                                         
@@ -100,7 +100,7 @@
                                  {{$listitem->payment_id}}
                             </td>
                             <td>
-                                 <a href="{{ADMIN_URL}}/booking/all-booking/{{$listitem->booking_id}}" target="_blank">{{$listitem->booking_id}}</a>
+                                 <a href="{{ADMIN_URL}}/all-booking/{{$listitem->booking_id}}" target="_blank">{{$listitem->booking_id}}</a>
                             </td>
                             
                             <td>

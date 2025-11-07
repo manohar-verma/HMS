@@ -245,4 +245,22 @@ class room_controller extends BaseController
             echo $updateStatus;
         }
      }
+    function availability(){
+        $checkUserAccess = $this->_myFun->validateUserAccess('availability','view');
+        if($checkUserAccess == false)
+        {
+            Session::put('error',ACCESS_DENIED_ALERT);
+            return redirect(ADMIN_URL.'/dashboard');
+        } 
+        return view('admin.room.availability');
+    }
+    function ratePlans(){
+        $checkUserAccess = $this->_myFun->validateUserAccess('rate-plans','view');
+        if($checkUserAccess == false)
+        {
+            Session::put('error',ACCESS_DENIED_ALERT);
+            return redirect(ADMIN_URL.'/dashboard');
+        } 
+        return view('admin.room.rate');
+    }
 }

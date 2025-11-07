@@ -51,8 +51,8 @@ Route::middleware('AdminAuthentication')->group( function () {
     Route::get('/all-booking/{id}', [booking::class,'editBooking']);
 
     
-    Route::get('/availability', [room::class,'availability']);
-    Route::get('/rate-plans', [room::class,'ratePlans']);
+    Route::get('/availability', [room_controller::class,'availability']);
+    Route::get('/rate-plans', [room_controller::class,'ratePlans']);
 
 
     Route::get('/payments-list', [payment::class,'index']);
