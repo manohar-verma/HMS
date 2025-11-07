@@ -102,7 +102,7 @@
                                             <th scope="col" class="border"> Max Guest</th>
                                             <th scope="col" class="border">Number Of Bed</th>
                                             <th scope="col" class="border">Amenities</th>
-                                            <th scope="col" class="border">Description</th>
+                                            <th scope="col" class="border">Cancellation Policy</th>
                                         </tr>
                                     </thead>
                                     <tbody id="checkall-target"> 
@@ -289,7 +289,7 @@ function handleDateChange(checkin, checkout) {
 	  $('#rooms_div').append('<button id="room_loader" class="btn btn-primary mt-2" type="button" disabled><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...</button>');
 	  $.ajax({
 		  type: "POST",
-		  url: "{{ADMIN_URL}}/booking/available-rooms",
+		  url: "{{ADMIN_URL}}/available-rooms",
 			data: { _token : _token,
                    checkin  : checkin,
                    checkout : checkout,
@@ -301,7 +301,7 @@ function handleDateChange(checkin, checkout) {
 			if (Array.isArray(response) && response.length>0){
                
                 $.each(response, function(index, item) {
-                   $('#roomInfo tbody').append(`<tr> <td><label><input type="checkbox" id="available_rooms" name="available_rooms[]" data-base-price="${item?.base_price}" data-room-number="${item?.room_number}" data-max-guest="${item?.max_guests}" value="${item?.room_id}"><span class="sr-only"> Select Row</span></label></td><td>${item?.room_number}</td><td>${item?.room_type}</td><td><i class="fas fa-rupee-sign"></i> ${item?.base_price}</td> <td>${item?.max_guests}</td> <td>${item?.number_of_bed}</td> <td>${typeof item?.amenities === "string" ? JSON.parse(item?.amenities) : item?.amenities}</td><td>${item?.description}</td></tr>`);
+                   $('#roomInfo tbody').append(`<tr> <td><label><input type="checkbox" id="available_rooms" name="available_rooms[]" data-base-price="${item?.base_price}" data-room-number="${item?.room_number}" data-max-guest="${item?.max_guests}" value="${item?.room_id}"><span class="sr-only"> Select Row</span></label></td><td>${item?.room_number}</td><td>${item?.room_type}</td><td><i class="fas fa-rupee-sign"></i> ${item?.base_price}</td> <td>${item?.max_guests}</td> <td>${item?.number_of_bed}</td> <td>${typeof item?.amenities === "string" ? JSON.parse(item?.amenities) : item?.amenities}</td><td><a href="{{ADMIN_URL}}/check-policy?hotel_id=${item?.hotel_id}&room_id=${item?.room_id}" target="_blank">Click Here</a></td></tr>`);
                 });
 			}
 			else{
