@@ -41,7 +41,7 @@
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
                                 href="{{ADMIN_URL}}/dashboard" aria-expanded="false">
                                 🏠<span class="hide-menu">Dashboard</span></a></li>
-                        @if(in_array("hotel-profile", $userRoles) ||  in_array("domain-and-brand", $userRoles) ||  in_array("business-info", $userRoles) ||  in_array("security-setting", $userRoles))            
+                        @if(in_array("hotel-profile", $userRoles) ||  in_array("domain-and-brand", $userRoles) ||  in_array("business-info", $userRoles) ||  in_array("security-setting", $userRoles) ||  in_array("hotel", $userRoles))            
                         <li class="sidebar-item">
                             <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
                                 aria-expanded="false">
@@ -51,12 +51,16 @@
                             <ul aria-expanded="false" class="collapse  first-level">
                                 @if(in_array("hotel-profile", $userRoles))
                                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                href="{{ADMIN_URL}}/hotel-profile" aria-expanded="false">🏨<span class="hide-menu">Hotel Profile</span></a></li> 
+                                href="{{ADMIN_URL}}/hotel-profile" aria-expanded="false">🌐<span class="hide-menu">Domain & Branding</span></a></li> 
                                 @endif
-                                @if(in_array("domain-and-brand", $userRoles))
+                                 @if(in_array("hotel", $userRoles))
+                                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                                href="{{ADMIN_URL}}/hotel" aria-expanded="false">🏨<span class="hide-menu">Manage Hotels</span></a></li> 
+                                @endif
+                                <!-- @if(in_array("domain-and-brand", $userRoles))
                                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
                                 href="{{ADMIN_URL}}/domain-and-brand" aria-expanded="false">🌐</i><span class="hide-menu">Domain & Branding</span></a></li> 
-                                @endif
+                                @endif -->
                                 @if(in_array("business-info", $userRoles))
                                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
                                 href="{{ADMIN_URL}}/business-info" aria-expanded="false">💼</i><span class="hide-menu">Business Info</span></a></li> 

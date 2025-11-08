@@ -182,7 +182,7 @@
 	  $('#changeStatus'+id).html('<img src="{{SITE_URL}}/assets/common/img/ajax-loader.gif" style="width: 11px;">');
 	  $.ajax({
 		  type: "POST",
-		  url: "{{ADMIN_URL}}/hotel/dostatuschange/"+id,
+		  url: "{{ADMIN_URL}}/hotel-status-change/"+id,
 			data: { _token : _token },
 		  success: function(data)
 		  {
@@ -191,7 +191,7 @@
 			  alert('id not found');
 			}
 			else{
-			  if (data == '1') {
+			  if (data == 1) {
 				$('#changeStatus'+id).html('<i class="fa fa-unlock fa-lg"></i>');
 			  }
 			  else{

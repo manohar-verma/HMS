@@ -58,7 +58,7 @@
                                         <button type="submit" class="btn btn-success"><span
                                                 class="fas fa-search"></span>
                                             </button>
-                                            <button type="button" onclick="window.location='{{ADMIN_URL}}/booking/all-booking'"
+                                            <button type="button" onclick="window.location='{{ADMIN_URL}}/all-booking'"
                                             class="btn btn-danger">Reset
                                         </button>
                                         
@@ -137,7 +137,7 @@
                              <td>
                               <div class="action-btn">
                                 @if($accessUpdate)
-                                    <a href="{{ADMIN_URL}}/booking/all-booking/{{$listitem->booking_id}}" class="text-info edit"><i data-feather="edit"
+                                    <a href="{{ADMIN_URL}}/all-booking/{{$listitem->booking_id}}" class="text-info edit"><i data-feather="edit"
                                             class="feather-sm fill-white"></i></a>
                                 @endif
                                 @if($accessDelete)               

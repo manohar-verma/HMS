@@ -56,7 +56,7 @@
                                         <div class="col-md-1"><h5>OR <i class="fas fa-angle-double-right"></i></h5></div>
                                         <div class="col-md-3">
                                         
-                                            <a class="btn btn-primary" href="{{ADMIN_URL}}/users/guest/create" target="_blank" role="button">Create New Guest</a>
+                                            <a class="btn btn-primary" href="{{ADMIN_URL}}/guest/create" target="_blank" role="button">Create New Guest</a>
 
                                         </div>
                                     
@@ -182,17 +182,17 @@
                                 </div>
                                     <div class="form-actions">
                                     <div class="card-body border-top">
-                                        <button type="submit" class="btn btn-success rounded-pill px-4">
+                                        <!-- <button type="submit" class="btn btn-success rounded-pill px-4">
                                             <div class="d-flex align-items-center">
                                                 <i data-feather="save" class="feather-sm me-1 fill-icon"></i> Update Booking
                                             </div>
-                                        </button>
+                                        </button> -->
                                         <button type="submit" class="btn btn-warning rounded-pill px-4">
                                             <div class="d-flex align-items-center">
                                                 <i data-feather="save" class="feather-sm me-1 fill-icon"></i> Cancel Booking
                                             </div>
                                         </button>
-                                        <button type="button" class="btn btn-danger rounded-pill px-4 ms-2 text-white" onclick="window.location.href='{{ADMIN_URL}}/booking/all-booking'">Return to all</button>
+                                        <button type="button" class="btn btn-danger rounded-pill px-4 ms-2 text-white" onclick="window.location.href='{{ADMIN_URL}}/all-booking'">Return to all</button>
                                     </div>
                                     </div>
                                 </form>

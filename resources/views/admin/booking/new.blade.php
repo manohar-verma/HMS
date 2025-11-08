@@ -55,7 +55,7 @@
                             <div class="col-md-1"><h5>OR <i class="fas fa-angle-double-right"></i></h5></div>
                             <div class="col-md-3">
                                
-                                <a class="btn btn-primary" href="{{ADMIN_URL}}/users/guest/create" target="_blank" role="button">Create New Guest</a>
+                                <a class="btn btn-primary" href="{{ADMIN_URL}}/guest/create" target="_blank" role="button">Create New Guest</a>
 
                             </div>
                         
@@ -167,7 +167,7 @@
                                     <i data-feather="save" class="feather-sm me-1 fill-icon"></i> Confirm Booking
                                 </div>
                             </button>
-                            <button type="button" class="btn btn-danger rounded-pill px-4 ms-2 text-white" onclick="window.location.href='{{ADMIN_URL}}/booking/all-booking'">Cancel</button>
+                            <button type="button" class="btn btn-danger rounded-pill px-4 ms-2 text-white" onclick="window.location.href='{{ADMIN_URL}}/all-booking'">Cancel</button>
                         </div>
                            </div>
                     </form>
