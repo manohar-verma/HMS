@@ -23,11 +23,12 @@ RUN git config --global --add safe.directory /var/www/html
 # Copy project files
 COPY . .
 
-# Force vendor folder creation and Laravel bootstrapping
+# Force vendor creation and Laravel bootstrapping
 RUN mkdir -p vendor \
-    && composer install --no-interaction --prefer-dist --optimize-autoloader || echo "Composer install failed, vendor folder may be incomplete" \
+    && composer install --no-interaction --prefer-dist --optimize-autoloader \
     && cp .env.example .env \
-    && php artisan key:generate || echo "Artisan key generation failed"
+    && php artisan key:generate \
+    || (echo "❌ Laravel setup failed. Check Composer or Artisan output." && exit 1)
 
 # Set strict permissions for Laravel runtime
 RUN chown -R www-data:www-data /var/www/html \
