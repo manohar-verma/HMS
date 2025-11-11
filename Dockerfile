@@ -23,16 +23,17 @@ RUN git config --global --add safe.directory /var/www/html
 # Copy project files
 COPY . .
 
-# Laravel setup with full error visibility
+# Laravel setup during build (optional, can be moved to entrypoint)
 RUN mkdir -p vendor \
     && composer install --no-interaction --prefer-dist --optimize-autoloader \
     && cp .env.example .env \
-    && php artisan key:generate \
     && echo "✅ Laravel setup complete." \
     || (echo "❌ Laravel setup failed. Check Composer or Artisan output." && exit 1)
 
-# Fix permissions for runtime stability
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage /var/www/html/bootstrap/cache \
-    && find /var/www/html/storage -type f -exec chmod 644 {} \; \
-    && find /var/www/html/bootstrap/cache -type f -exec chmod 644 {} \;
+# Copy runtime entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Use entrypoint to fix permissions at runtime
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["php-fpm"]
