@@ -18,7 +18,7 @@ services:
       - "80:80"
     volumes:
       - .:/var/www/html
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx.conf:/etc/nginx/nginx.conf  # ✅ Mount as main config
     depends_on:
       - laravel
     networks:
