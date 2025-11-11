@@ -1,0 +1,14 @@
+project:
+  name: hms-admin-wjzkns
+
+services:
+  app:
+    compose:
+      file: docker-compose.yml
+      service: laravel
+    public: true
+    url: http://72.61.169.80/bs
+    git:
+      repo: https://github.com/manohar-verma/HMS.git
+      branch: main
+      auto_pull: true
