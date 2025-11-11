@@ -7,7 +7,7 @@ services:
       file: docker-compose.yml
       service: laravel
     public: true
-    url: http://72.61.169.80/bs
+    url: http://72.61.169.80
     git:
       repo: https://github.com/manohar-verma/HMS.git
       branch: main
