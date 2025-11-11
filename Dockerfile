@@ -28,6 +28,7 @@ RUN mkdir -p vendor \
     && composer install --no-interaction --prefer-dist --optimize-autoloader \
     && cp .env.example .env \
     && php artisan key:generate \
+    && echo "✅ Laravel setup complete." \
     || (echo "❌ Laravel setup failed. Check Composer or Artisan output." && exit 1)
 
 # Set strict permissions for Laravel runtime
