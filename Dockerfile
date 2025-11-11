@@ -23,7 +23,7 @@ RUN git config --global --add safe.directory /var/www/html
 # Copy project files
 COPY . .
 
-# Force vendor creation and Laravel bootstrapping
+# Laravel setup with full error visibility
 RUN mkdir -p vendor \
     && composer install --no-interaction --prefer-dist --optimize-autoloader \
     && cp .env.example .env \
@@ -31,7 +31,7 @@ RUN mkdir -p vendor \
     && echo "✅ Laravel setup complete." \
     || (echo "❌ Laravel setup failed. Check Composer or Artisan output." && exit 1)
 
-# Set strict permissions for Laravel runtime
+# Fix permissions for runtime stability
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage /var/www/html/bootstrap/cache \
     && find /var/www/html/storage -type f -exec chmod 644 {} \; \
