@@ -15,6 +15,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
+# ✅ Add this line
+RUN git config --global --add safe.directory /var/www/html
+
 COPY . .
 
 RUN composer install \
