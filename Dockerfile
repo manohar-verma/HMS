@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
-    libpq-dev \                     # ✅ Required for PostgreSQL
+    libpq-dev \                     # ✅ PostgreSQL support
     zip \
     unzip \
     git \
@@ -31,7 +31,7 @@ RUN git config --global --add safe.directory /var/www/html
 # Copy project files
 COPY . .
 
-# Laravel setup during build (optional, can be moved to entrypoint)
+# Laravel setup during build (optional)
 RUN mkdir -p vendor \
     && composer install --no-interaction --prefer-dist --optimize-autoloader \
     && cp .env.example .env \
