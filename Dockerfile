@@ -5,11 +5,19 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
+    libpq-dev \                     # ✅ Required for PostgreSQL
     zip \
     unzip \
     git \
     curl \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+    && docker-php-ext-install \
+        pdo_mysql \
+        pdo_pgsql \                # ✅ PostgreSQL PDO extension
+        mbstring \
+        exif \
+        pcntl \
+        bcmath \
+        gd
 
 # Install Composer from official image
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
