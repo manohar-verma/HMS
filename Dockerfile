@@ -5,14 +5,14 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
-    libpq-dev \                     # ✅ PostgreSQL support
+    libpq-dev \
     zip \
     unzip \
     git \
     curl \
     && docker-php-ext-install \
         pdo_mysql \
-        pdo_pgsql \                # ✅ PostgreSQL PDO extension
+        pdo_pgsql \
         mbstring \
         exif \
         pcntl \
