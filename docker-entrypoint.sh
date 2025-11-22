@@ -24,14 +24,15 @@ chmod -R 755 storage bootstrap/cache
 find storage -type f -exec chmod 644 {} \;
 find bootstrap/cache -type f -exec chmod 644 {} \;
 
-# 🔐 Fix Traefik certificate file permissions (host side)
+# 🔐 Fix Traefik certificate file permissions (host side + container side)
 if [ -f "./dynamic/acme.json" ]; then
     echo "🔐 Securing Traefik acme.json on host..."
     chmod 600 ./dynamic/acme.json
-    # Also fix inside the running Traefik container if it exists
     if docker ps --format '{{.Names}}' | grep -q '^dokploy-traefik$'; then
         echo "🔐 Securing Traefik acme.json inside container..."
-        docker exec -it dokploy-traefik chmod 600 /etc/traefik/dynamic/acme.json
+        docker exec dokploy-traefik chmod 600 /etc/traefik/dynamic/acme.json
+        echo "📜 Tailing Traefik ACME logs..."
+        docker logs -f dokploy-traefik | grep --line-buffered acme &
     fi
 fi
 

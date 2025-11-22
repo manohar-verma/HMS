@@ -40,7 +40,6 @@ services:
   nginx:
     image: nginx:alpine
     container_name: laravel_nginx
-    # ❌ Removed ports: Traefik handles external exposure
     volumes:
       - .:/var/www/html
       - ./nginx.conf:/etc/nginx/nginx.conf
