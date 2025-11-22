@@ -1,6 +1,21 @@
 version: '3.8'
 
 services:
+  traefik:
+    image: traefik:v3.6
+    container_name: dokploy-traefik
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"  # Optional: dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.yml:/etc/traefik/traefik.yml
+      - ./dynamic:/etc/traefik/dynamic
+    networks:
+      - laravel_net
+
   laravel:
     build:
       context: .

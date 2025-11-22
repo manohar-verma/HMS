@@ -1,0 +1,23 @@
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+
+providers:
+  docker:
+    exposedByDefault: false
+  file:
+    directory: /etc/traefik/dynamic
+    watch: true
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: contact@stayhub360.com
+      storage: /etc/traefik/dynamic/acme.json
+      httpChallenge:
+        entryPoint: web
+
+api:
+  insecure: true

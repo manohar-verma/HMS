@@ -1,0 +1,24 @@
+http:
+  routers:
+    stayhub360-router:
+      rule: Host(`stayhub360.com`)
+      entryPoints:
+        - websecure
+      service: stayhub360-service
+      tls:
+        certResolver: letsencrypt
+
+    stayhub360-http:
+      rule: Host(`stayhub360.com`)
+      entryPoints:
+        - web
+      service: stayhub360-service
+      middlewares:
+        - redirect-to-https
+
+  services:
+    stayhub360-service:
+      loadBalancer:
+        servers:
+          - url: http://laravel_nginx:80
+        passHostHeader: true
