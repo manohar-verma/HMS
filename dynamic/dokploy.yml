@@ -1,24 +1,14 @@
 http:
   routers:
-    stayhub360-router:
-      rule: Host(`stayhub360.com`)
-      entryPoints:
-        - websecure
-      service: stayhub360-service
-      tls:
-        certResolver: letsencrypt
-
-    stayhub360-http:
-      rule: Host(`stayhub360.com`)
+    acme-http:
+      rule: PathPrefix(`/.well-known/acme-challenge/`)
       entryPoints:
         - web
-      service: stayhub360-service
-      middlewares:
-        - redirect-to-https
+      service: acme-service
+      priority: 100
 
   services:
-    stayhub360-service:
+    acme-service:
       loadBalancer:
         servers:
-          - url: http://laravel_nginx:80
-        passHostHeader: true
+          - url: http://127.0.0.1
