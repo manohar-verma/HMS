@@ -24,4 +24,10 @@ chmod -R 755 storage bootstrap/cache
 find storage -type f -exec chmod 644 {} \;
 find bootstrap/cache -type f -exec chmod 644 {} \;
 
+# 🔐 Fix Traefik certificate file permissions
+if [ -f "./dynamic/acme.json" ]; then
+    echo "🔐 Securing Traefik acme.json..."
+    chmod 600 ./dynamic/acme.json
+fi
+
 exec "$@"
