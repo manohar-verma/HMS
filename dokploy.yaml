@@ -1,5 +1,5 @@
 project:
-  name: hms-admin-wjzkns
+  name: stayhub360-admin
 
 services:
   app:
@@ -7,8 +7,24 @@ services:
       file: docker-compose.yml
       service: laravel
     public: true
-    url: http://72.61.169.80
+    url: https://stayhub360.com
     git:
       repo: https://github.com/manohar-verma/HMS.git
       branch: main
       auto_pull: true
+
+domains:
+  - stayhub360.com
+
+certificates:
+  - type: automatic
+    provider: letsencrypt
+    domains:
+      - stayhub360.com
+
+routes:
+  - domain: stayhub360.com
+    service: laravel_nginx
+    port: 80
+    secure: true
+    certificate: stayhub360.com

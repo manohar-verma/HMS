@@ -19,6 +19,8 @@ services:
       DB_DATABASE: hms_db
       DB_USERNAME: hms_db_user
       DB_PASSWORD: fzz9mxzvnko5egpx
+      APP_URL: https://stayhub360.com
+      SESSION_DOMAIN: stayhub360.com
 
   nginx:
     image: nginx:alpine
@@ -32,6 +34,12 @@ services:
       - laravel
     networks:
       - laravel_net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.stayhub360.rule=Host(`stayhub360.com`)"
+      - "traefik.http.routers.stayhub360.entrypoints=websecure"
+      - "traefik.http.routers.stayhub360.tls.certresolver=letsencrypt"
+      - "traefik.http.services.stayhub360.loadbalancer.server.port=80"
 
   db:
     image: postgres:17
