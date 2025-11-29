@@ -25,6 +25,6 @@ certificates:
 routes:
   - domain: stayhub360.com
     service: laravel_nginx
-    port: 80
+    port: 3000        # ✅ match Nginx listen port
     secure: true
     certificate: stayhub360.com

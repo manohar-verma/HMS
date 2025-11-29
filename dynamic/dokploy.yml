@@ -24,7 +24,7 @@ http:
     stayhub360-service:
       loadBalancer:
         servers:
-          - url: http://laravel_nginx:80
+          - url: http://laravel_nginx:3000   # ✅ match your Nginx listen port
         passHostHeader: true
 
   middlewares:

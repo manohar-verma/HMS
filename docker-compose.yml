@@ -49,10 +49,23 @@ services:
       - laravel_net
     labels:
       - "traefik.enable=true"
+
+      # HTTP router (redirects to HTTPS)
+      - "traefik.http.routers.stayhub360-http.rule=Host(`stayhub360.com`)"
+      - "traefik.http.routers.stayhub360-http.entrypoints=web"
+      - "traefik.http.routers.stayhub360-http.middlewares=redirect-to-https"
+
+      # HTTPS router
       - "traefik.http.routers.stayhub360.rule=Host(`stayhub360.com`)"
       - "traefik.http.routers.stayhub360.entrypoints=websecure"
       - "traefik.http.routers.stayhub360.tls.certresolver=letsencrypt"
-      - "traefik.http.services.stayhub360.loadbalancer.server.port=80"
+
+      # Service port (match Nginx listen port)
+      - "traefik.http.services.stayhub360.loadbalancer.server.port=3000"
+
+      # Middleware definition
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true"
 
   db:
     image: postgres:17
